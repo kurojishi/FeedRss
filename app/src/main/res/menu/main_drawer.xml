@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.kurojishi.feedrss.MainDrawerActivity">
     <item
-        android:id="@+id/action_example"
-        android:title="@string/action_example"
-        app:showAsAction="withText|ifRoom" />
+        android:id="@+id/new_subscrition"
+        android:title="@string/subscribe"
+        app:showAsAction="always" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

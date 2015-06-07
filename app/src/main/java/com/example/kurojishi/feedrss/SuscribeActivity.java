@@ -1,12 +1,17 @@
 package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
+import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.EditText;
 
 
 public class SuscribeActivity extends Activity {
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,5 +39,19 @@ public class SuscribeActivity extends Activity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    public void addFeed(View view) {
+        FeedDB feedDB = new FeedDB(view.getContext());
+        SQLiteDatabase db = feedDB.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        EditText editTitle = (EditText) findViewById(R.id.subscribe_title);
+        EditText editUrl = (EditText) findViewById(R.id.subscribe_url);
+
+        values.put(FeedDB.FeedEntry.COLUMN_NAME_TITLE, editTitle.getText().toString());
+        values.put(FeedDB.FeedEntry.COLUMN_NAME_URL, editUrl.getText().toString());
+
+        long newRow = db.insert(FeedDB.FeedEntry.TABLE_NAME, null, values);
+        finish();
     }
 }

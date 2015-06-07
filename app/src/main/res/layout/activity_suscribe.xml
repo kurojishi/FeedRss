@@ -13,13 +13,14 @@
         android:id="@+id/add_feed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/url"
+        android:layout_below="@+id/subscribe_url"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="31dp"
+        android:onClick="addFeed"
         android:text="@string/button_add" />
 
     <EditText
-        android:id="@+id/title"
+        android:id="@+id/subscribe_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -27,10 +28,10 @@
         android:hint="@string/new_feed_title_hint" />
 
     <EditText
-        android:id="@+id/url"
+        android:id="@+id/subscribe_url"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/subscribe_title"
         android:layout_centerHorizontal="true"
         android:hint="@string/new_feed_url_hint" />
 

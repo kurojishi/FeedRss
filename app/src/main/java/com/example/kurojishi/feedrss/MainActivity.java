@@ -1,6 +1,7 @@
 package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
@@ -67,8 +68,12 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case (R.id.action_settings):
+                return true;
+            case (R.id.new_subscrition):
+                startActivity(new Intent(this, SuscribeActivity.class));
+
         }
 
         return super.onOptionsItemSelected(item);

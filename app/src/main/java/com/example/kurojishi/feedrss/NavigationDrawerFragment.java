@@ -229,7 +229,7 @@ public class NavigationDrawerFragment extends Fragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         // If the drawer is open, show the global app actions in the action bar.
         if (mDrawerLayout != null && isDrawerOpen()) {
-            inflater.inflate(R.menu.global, menu);
+            inflater.inflate(R.menu.menu_main, menu);
         }
         super.onCreateOptionsMenu(menu, inflater);
     }
@@ -240,8 +240,8 @@ public class NavigationDrawerFragment extends Fragment {
             return true;
         }
 
-        if (item.getItemId() == R.id.action_example) {
-            Toast.makeText(getActivity(), "Example action.", Toast.LENGTH_SHORT).show();
+        if (item.getItemId() == R.id.new_subscrition) {
+            Toast.makeText(getActivity(), "New Feed", Toast.LENGTH_SHORT).show();
             return true;
         }
 
