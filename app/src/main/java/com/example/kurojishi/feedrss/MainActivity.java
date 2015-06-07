@@ -9,7 +9,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 
-public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks, RssItemFragment.OnFragmentInteractionListener {
+public class MainActivity extends Activity implements NavigationDrawerFragment.NavigationDrawerCallbacks, RssListFragment.OnFragmentInteractionListener {
 
     /**
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
@@ -42,7 +42,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        RssItemFragment rssFragment = new RssItemFragment();
+        RssListFragment rssFragment = new RssListFragment();
         getFragmentManager().beginTransaction().add(R.id.rss_fragment_container, rssFragment).commit();
 
     }

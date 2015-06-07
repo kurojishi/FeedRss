@@ -23,7 +23,7 @@ import com.example.kurojishi.feedrss.dummy.DummyContent;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class RssItemFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class RssListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,12 +51,12 @@ public class RssItemFragment extends Fragment implements AbsListView.OnItemClick
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public RssItemFragment() {
+    public RssListFragment() {
     }
 
     // TODO: Rename and change types of parameters
-    public static RssItemFragment newInstance(String param1, String param2) {
-        RssItemFragment fragment = new RssItemFragment();
+    public static RssListFragment newInstance(String param1, String param2) {
+        RssListFragment fragment = new RssListFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
