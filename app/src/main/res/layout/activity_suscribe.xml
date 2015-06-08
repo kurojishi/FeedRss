@@ -13,9 +13,11 @@
         android:id="@+id/add_feed"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/subscribe_url"
+        android:layout_below="@+id/is_url_valid"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="31dp"
+        android:layout_marginTop="45dp"
+        android:enabled="false"
+        android:focusable="false"
         android:onClick="addFeed"
         android:text="@string/button_add" />
 
@@ -34,5 +36,32 @@
         android:layout_below="@+id/subscribe_title"
         android:layout_centerHorizontal="true"
         android:hint="@string/new_feed_url_hint" />
+
+    <TextView
+        android:id="@+id/is_url_valid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/subscribe_url"
+        android:layout_below="@+id/subscribe_url"
+        android:layout_toStartOf="@+id/url_found"
+        android:text="@string/is_url_valid" />
+
+    <TextView
+        android:id="@+id/url_found"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/subscribe_url"
+        android:layout_below="@+id/is_url_valid"
+        android:layout_toStartOf="@+id/valid_rss"
+        android:text="@string/is_url_found" />
+
+    <TextView
+        android:id="@+id/valid_rss"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/subscribe_url"
+        android:layout_below="@+id/url_found"
+        android:layout_toStartOf="@+id/add_feed"
+        android:text="@string/is_valid_rss" />
 
 </RelativeLayout>

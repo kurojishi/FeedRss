@@ -16,10 +16,10 @@ import com.example.kurojishi.feedrss.dummy.DummyContent;
 
 /**
  * A fragment representing a list of Items.
- * <p/>
+ * <p>
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
- * <p/>
+ * <p>
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
@@ -137,7 +137,7 @@ public class RssListFragment extends Fragment implements AbsListView.OnItemClick
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p/>
+     * <p>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
