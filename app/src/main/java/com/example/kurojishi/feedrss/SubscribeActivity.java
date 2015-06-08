@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.EditText;
 
 
-public class SuscribeActivity extends Activity {
+public class SubscribeActivity extends Activity {
 
 
     @Override

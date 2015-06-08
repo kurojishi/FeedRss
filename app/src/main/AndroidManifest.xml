@@ -17,7 +17,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".SuscribeActivity"
+            android:name=".SubscribeActivity"
             android:label="@string/title_activity_add_new_feed"
             android:parentActivityName=".MainActivity">
             <meta-data

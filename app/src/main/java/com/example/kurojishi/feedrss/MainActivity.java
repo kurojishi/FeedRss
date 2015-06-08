@@ -72,7 +72,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
             case (R.id.action_settings):
                 return true;
             case (R.id.new_subscrition):
-                startActivity(new Intent(this, SuscribeActivity.class));
+                startActivity(new Intent(this, SubscribeActivity.class));
 
         }
 
