@@ -52,16 +52,7 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/subscribe_url"
         android:layout_below="@+id/is_url_valid"
-        android:layout_toStartOf="@+id/valid_rss"
-        android:text="@string/is_url_found" />
-
-    <TextView
-        android:id="@+id/valid_rss"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/subscribe_url"
-        android:layout_below="@+id/url_found"
         android:layout_toStartOf="@+id/add_feed"
-        android:text="@string/is_valid_rss" />
+        android:text="@string/is_url_found" />
 
 </RelativeLayout>

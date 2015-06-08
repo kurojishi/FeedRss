@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -19,7 +20,6 @@ import android.widget.TextView;
 import org.xml.sax.SAXException;
 
 import java.io.IOException;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -28,18 +28,19 @@ import nl.matshofman.saxrssreader.RssReader;
 
 public class SubscribeActivity extends Activity {
 
-    private UrlWatcher mUrlWatcher;
+
     private EditText mEditTitle;
     private EditText mEditUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        UrlWatcher urlWatcher;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suscribe);
         mEditTitle = (EditText) findViewById(R.id.subscribe_title);
         mEditUrl = (EditText) findViewById(R.id.subscribe_url);
-        mUrlWatcher = new UrlWatcher();
-        mEditUrl.addTextChangedListener(mUrlWatcher);
+        urlWatcher = new UrlWatcher();
+        mEditUrl.addTextChangedListener(urlWatcher);
     }
 
     @Override
@@ -79,6 +80,7 @@ public class SubscribeActivity extends Activity {
 
     private final class UrlWatcher implements TextWatcher {
 
+
         @Override
         public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
@@ -91,54 +93,71 @@ public class SubscribeActivity extends Activity {
 
         @Override
         public void afterTextChanged(Editable editable) {
+            TextView validUrl = (TextView) findViewById(R.id.is_url_valid);
             if (!Patterns.WEB_URL.matcher(editable.toString()).matches() && URLUtil.isHttpsUrl(editable.toString())) {
-                TextView validUrl = (TextView) findViewById(R.id.is_url_valid);
+
                 validUrl.setText(R.string.url_is_not_valid);
                 validUrl.setTextColor(Color.RED);
+                return;
 
-
-            } else {
-                TextView valid = (TextView) findViewById(R.id.is_url_valid);
-                valid.setText(R.string.url_is_valid);
-                valid.setTextColor(Color.GREEN);
-                URL url;
-                try {
-                    url = new URL(editable.toString());
-                } catch (MalformedURLException e) {
-                    //this shouldn't happen as url is checked before this step
-                    return;
-                }
-                try {
-                    HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-                } catch (IOException e) {
-                    TextView foundUrl = (TextView) findViewById(R.id.url_found);
-                    foundUrl.setText(R.string.url_not_found);
-                    foundUrl.setTextColor(Color.RED);
-                    return;
-                }
-                TextView foundUrl = (TextView) findViewById(R.id.url_found);
-                foundUrl.setText(R.string.url_found);
-                foundUrl.setTextColor(Color.GREEN);
-                try {
-                    RssReader.read(url);
-                } catch (IOException e) {
-                    //this shouldn't happen as it's been done in the step before this
-                    return;
-                } catch (SAXException e) {
-                    //This is a Parse Error so the link is not an well formed RSS FEED
-                    TextView validRSS = (TextView) findViewById(R.id.valid_rss);
-                    validRSS.setText(R.string.not_valid_rss);
-                    validRSS.setTextColor(Color.RED);
-                    return;
-                }
-                TextView validRSS = (TextView) findViewById(R.id.valid_rss);
-                validRSS.setText(R.string.valid_rss);
-                validRSS.setTextColor(Color.GREEN);
-
-                Button addFeed = (Button) findViewById(R.id.add_feed);
             }
+            validUrl.setText(R.string.url_is_valid);
+            validUrl.setTextColor(Color.GREEN);
+            URL url;
+            try {
+                url = new URL(editable.toString());
+            } catch (MalformedURLException e) {
+                //this shouldn't happen as url is checked before this step
+                return;
+            }
+            new CheckURLStatus().execute(url);
 
 
         }
+
+        private final class CheckURLStatus extends AsyncTask<URL, Void, Integer>
+
+        {
+
+            @Override
+            protected Integer doInBackground(URL... urls) {
+                if (urls.length > 1) {
+                    return 3;
+                }
+                URL url = urls[0];
+                try {
+                    RssReader.read(url);
+                } catch (IOException e) {
+                    //This is a Connection Error
+                    return 1;
+                } catch (SAXException e) {
+                    //This is a Parse Error so the link is not an well formed RSS FEED
+                    return 2;
+                }
+                return 0;
+            }
+
+            @Override
+            protected void onPostExecute(Integer valid) {
+                TextView foundUrl = (TextView) findViewById(R.id.url_found);
+                switch (valid) {
+                    case 0:
+
+                        foundUrl.setText(R.string.url_found_and_valid);
+                        foundUrl.setTextColor(Color.GREEN);
+                        Button addFeed = (Button) findViewById(R.id.add_feed);
+                        addFeed.setEnabled(true);
+                    case 1:
+                        foundUrl.setText(R.string.url_not_found);
+                        foundUrl.setTextColor(Color.RED);
+                    case 2:
+                        foundUrl.setText(R.string.invalid_rss);
+                        foundUrl.setTextColor(Color.RED);
+                }
+
+            }
+        }
+
+
     }
 }
