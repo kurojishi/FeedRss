@@ -15,13 +15,17 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.pkmmte.pkrss.Article;
-import com.pkmmte.pkrss.PkRSS;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
 
 
 public class SubscribeActivity extends Activity {
@@ -106,20 +110,32 @@ public class SubscribeActivity extends Activity {
 
             @Override
             protected Integer doInBackground(URL... urls) {
-                PkRSS.Builder builder = new PkRSS.Builder(getBaseContext());
-                PkRSS fetcher = builder.build();
                 if (urls.length > 1) {
                     return 3;
                 }
+
+                RssHandler handler = new RssHandler();
+                SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+
+
                 URL url = urls[0];
                 try {
-                    List<Article> rssItems = fetcher.load(url.toString()).get();
+                    SAXParser parser = parserFactory.newSAXParser();
+                    XMLReader reader = parser.getXMLReader();
+
+                    reader.setContentHandler(handler);
+
+                    reader.parse(new InputSource(url.openStream()));
+
                 } catch (IOException e) {
                     //This is a Connection Error
                     return 1;
-                } catch (Exception e) {
+                } catch (SAXException e) {
                     //This is a Parse Error so the link is not an well formed RSS FEED
                     return 2;
+                } catch (ParserConfigurationException e) {
+                    finish();
+                    return null;
                 }
                 return 0;
             }
