@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -74,19 +75,20 @@ public class SubscribeActivity extends Activity {
         values.put(FeedDB.FeedEntry.COLUMN_NAME_URL, mEditUrl.getText().toString());
 
         long newRow = db.insert(FeedDB.FeedEntry.TABLE_NAME, null, values);
+        Log.d("how many row", String.valueOf(newRow));
         finish();
     }
 
     public void validateUrl(View view) {
         TextView textUrl = (TextView) findViewById(R.id.subscribe_url);
-            TextView validUrl = (TextView) findViewById(R.id.is_url_valid);
+        TextView validUrl = (TextView) findViewById(R.id.is_url_valid);
         if (textUrl.getText().toString().equals(getString(R.string.new_feed_url_hint))) {
             return;
         }
-        if (!Patterns.WEB_URL.matcher(textUrl.getText().toString()).matches() && URLUtil.isHttpsUrl(textUrl.getText().toString())) {
+        if (!Patterns.WEB_URL.matcher(textUrl.getText().toString()).matches() || URLUtil.isHttpsUrl(textUrl.getText().toString())) {
 
-                validUrl.setText(R.string.url_is_not_valid);
-                validUrl.setTextColor(Color.RED);
+            validUrl.setText(R.string.url_is_not_valid);
+            validUrl.setTextColor(Color.RED);
             return;
 
         }
@@ -97,69 +99,78 @@ public class SubscribeActivity extends Activity {
             url = new URL(textUrl.getText().toString());
         } catch (MalformedURLException e) {
             //this shouldn't happen as url is checked before this step
-                return;
-            }
-            new CheckURLStatus().execute(url);
-
-
+            return;
         }
-
-        private final class CheckURLStatus extends AsyncTask<URL, Void, Integer>
-
-        {
-
-            @Override
-            protected Integer doInBackground(URL... urls) {
-                if (urls.length > 1) {
-                    return 3;
-                }
-
-                RssHandler handler = new RssHandler();
-                SAXParserFactory parserFactory = SAXParserFactory.newInstance();
-
-
-                URL url = urls[0];
-                try {
-                    SAXParser parser = parserFactory.newSAXParser();
-                    XMLReader reader = parser.getXMLReader();
-
-                    reader.setContentHandler(handler);
-
-                    reader.parse(new InputSource(url.openStream()));
-
-                } catch (IOException e) {
-                    //This is a Connection Error
-                    return 1;
-                } catch (SAXException e) {
-                    //This is a Parse Error so the link is not an well formed RSS FEED
-                    return 2;
-                } catch (ParserConfigurationException e) {
-                    finish();
-                    return null;
-                }
-                return 0;
-            }
-
-            @Override
-            protected void onPostExecute(Integer valid) {
-                TextView foundUrl = (TextView) findViewById(R.id.url_found);
-                switch (valid) {
-                    case 0:
-
-                        foundUrl.setText(R.string.url_found_and_valid);
-                        foundUrl.setTextColor(Color.GREEN);
-                        Button addFeed = (Button) findViewById(R.id.add_feed);
-                        addFeed.setEnabled(true);
-                    case 1:
-                        foundUrl.setText(R.string.url_not_found);
-                        foundUrl.setTextColor(Color.RED);
-                    case 2:
-                        foundUrl.setText(R.string.invalid_rss);
-                        foundUrl.setTextColor(Color.RED);
-                }
-
-            }
-        }
+        new CheckURLStatus().execute(url);
 
 
     }
+
+    private final class CheckURLStatus extends AsyncTask<URL, Void, Integer>
+
+    {
+
+        @Override
+        protected Integer doInBackground(URL... urls) {
+            if (urls.length > 1) {
+                return null;
+            }
+
+            RssHandler handler = new RssHandler();
+            SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+
+
+            URL url = urls[0];
+            try {
+                SAXParser parser = parserFactory.newSAXParser();
+                XMLReader reader = parser.getXMLReader();
+
+                reader.setContentHandler(handler);
+
+                reader.parse(new InputSource(url.openStream()));
+
+            } catch (IOException e) {
+                //This is a Connection Error
+                Log.d("Connection Error", e.getMessage());
+                return 1;
+            } catch (SAXException e) {
+                //This is a Parse Error so the link is not an well formed RSS FEED
+                Log.d("Parsing Error", e.getMessage());
+                return 2;
+            } catch (ParserConfigurationException e) {
+                Log.e("This Should not Happen", e.getMessage());
+                finish();
+                return null;
+            }
+            return 0;
+        }
+
+        @Override
+        protected void onPostExecute(Integer valid) {
+            TextView foundUrl = (TextView) findViewById(R.id.url_found);
+            switch (valid) {
+                case 0:
+                    foundUrl.setText(R.string.url_found_and_valid);
+                    foundUrl.setTextColor(Color.GREEN);
+                    Button addFeedButton = (Button) findViewById(R.id.add_feed);
+                    addFeedButton.setEnabled(true);
+                    break;
+                case 1:
+                    foundUrl.setText(R.string.url_not_found);
+                    foundUrl.setTextColor(Color.RED);
+                    break;
+                case 2:
+                    foundUrl.setText(R.string.invalid_rss);
+                    foundUrl.setTextColor(Color.RED);
+                    break;
+                default:
+                    foundUrl.setText("WTF IS HAPPENING");
+                    foundUrl.setTextColor(Color.YELLOW);
+                    break;
+            }
+
+        }
+    }
+
+
+}
