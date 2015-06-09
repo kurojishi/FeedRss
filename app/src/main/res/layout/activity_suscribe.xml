@@ -41,18 +41,29 @@
         android:id="@+id/is_url_valid"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/subscribe_url"
         android:layout_below="@+id/subscribe_url"
-        android:layout_toStartOf="@+id/url_found"
+        android:layout_toStartOf="@+id/add_feed"
         android:text="@string/is_url_valid" />
 
     <TextView
         android:id="@+id/url_found"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/subscribe_url"
+        android:layout_alignEnd="@+id/is_url_valid"
         android:layout_below="@+id/is_url_valid"
         android:layout_toStartOf="@+id/add_feed"
         android:text="@string/is_url_found" />
+
+    <Button
+        android:id="@+id/validate_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/subscribe_url"
+        android:layout_below="@+id/subscribe_url"
+        android:layout_marginEnd="37dp"
+        android:enabled="true"
+        android:onClick="validateUrl"
+        android:text="validate" />
 
 </RelativeLayout>

@@ -6,8 +6,6 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Patterns;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -17,13 +15,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.xml.sax.SAXException;
+import com.pkmmte.pkrss.Article;
+import com.pkmmte.pkrss.PkRSS;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import nl.matshofman.saxrssreader.RssReader;
+import java.util.List;
 
 
 public class SubscribeActivity extends Activity {
@@ -34,13 +32,10 @@ public class SubscribeActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        UrlWatcher urlWatcher;
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_suscribe);
         mEditTitle = (EditText) findViewById(R.id.subscribe_title);
         mEditUrl = (EditText) findViewById(R.id.subscribe_url);
-        urlWatcher = new UrlWatcher();
-        mEditUrl.addTextChangedListener(urlWatcher);
     }
 
     @Override
@@ -78,36 +73,26 @@ public class SubscribeActivity extends Activity {
         finish();
     }
 
-    private final class UrlWatcher implements TextWatcher {
-
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
+    public void validateUrl(View view) {
+        TextView textUrl = (TextView) findViewById(R.id.subscribe_url);
             TextView validUrl = (TextView) findViewById(R.id.is_url_valid);
-            if (!Patterns.WEB_URL.matcher(editable.toString()).matches() && URLUtil.isHttpsUrl(editable.toString())) {
+        if (textUrl.getText().toString().equals(getString(R.string.new_feed_url_hint))) {
+            return;
+        }
+        if (!Patterns.WEB_URL.matcher(textUrl.getText().toString()).matches() && URLUtil.isHttpsUrl(textUrl.getText().toString())) {
 
                 validUrl.setText(R.string.url_is_not_valid);
                 validUrl.setTextColor(Color.RED);
-                return;
+            return;
 
-            }
-            validUrl.setText(R.string.url_is_valid);
-            validUrl.setTextColor(Color.GREEN);
-            URL url;
-            try {
-                url = new URL(editable.toString());
-            } catch (MalformedURLException e) {
-                //this shouldn't happen as url is checked before this step
+        }
+        validUrl.setText(R.string.url_is_valid);
+        validUrl.setTextColor(Color.GREEN);
+        URL url;
+        try {
+            url = new URL(textUrl.getText().toString());
+        } catch (MalformedURLException e) {
+            //this shouldn't happen as url is checked before this step
                 return;
             }
             new CheckURLStatus().execute(url);
@@ -121,16 +106,18 @@ public class SubscribeActivity extends Activity {
 
             @Override
             protected Integer doInBackground(URL... urls) {
+                PkRSS.Builder builder = new PkRSS.Builder(getBaseContext());
+                PkRSS fetcher = builder.build();
                 if (urls.length > 1) {
                     return 3;
                 }
                 URL url = urls[0];
                 try {
-                    RssReader.read(url);
+                    List<Article> rssItems = fetcher.load(url.toString()).get();
                 } catch (IOException e) {
                     //This is a Connection Error
                     return 1;
-                } catch (SAXException e) {
+                } catch (Exception e) {
                     //This is a Parse Error so the link is not an well formed RSS FEED
                     return 2;
                 }
@@ -160,4 +147,3 @@ public class SubscribeActivity extends Activity {
 
 
     }
-}

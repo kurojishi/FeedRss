@@ -4,7 +4,6 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/FeedRss.iml" filepath="$PROJECT_DIR$/FeedRss.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://$PROJECT_DIR$/sAXRSSReader/sAXRSSReader.iml" filepath="$PROJECT_DIR$/sAXRSSReader/sAXRSSReader.iml" />
     </modules>
   </component>
 </project>
