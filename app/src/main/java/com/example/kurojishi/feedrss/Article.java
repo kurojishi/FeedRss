@@ -20,10 +20,15 @@ https://github.com/nerdability/AndroidRssReader/blob/master/src/com/nerdability/
 
 package com.example.kurojishi.feedrss;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.util.Date;
 
-public class Article implements Serializable {
+public class Article implements Serializable, Comparable<Article> {
 
     public static final String KEY = "ARTICLE";
 
@@ -126,4 +131,17 @@ public class Article implements Serializable {
         return data;
     }
 
+    @Override
+    public int compareTo(Article article) {
+        try {
+            Date current = DateFormat.getDateInstance().parse(pubDate);
+            Date compDate = DateFormat.getDateInstance().parse(article.getPubDate());
+
+            return current.compareTo(compDate);
+
+        } catch (ParseException e) {
+            Log.e("Parsing Date Error", e.getMessage());
+        }
+        return 0;
+    }
 }
