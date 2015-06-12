@@ -30,7 +30,7 @@ import java.util.List;
 public class RssHandler extends DefaultHandler {
 
     // Number of articles to download
-    private static final int ARTICLES_LIMIT = 15;
+    private static final int ARTICLES_LIMIT = 999;
     //Current characters being accumulated
     StringBuffer chars = new StringBuffer();
     // Feed and Article objects to use for temporary storage
@@ -53,6 +53,9 @@ public class RssHandler extends DefaultHandler {
      * @see org.xml.sax.helpers.DefaultHandler#startElement(java.lang.String, java.lang.String, java.lang.String, org.xml.sax.Attributes)
      */
     public void startElement(String uri, String localName, String qName, Attributes atts) {
+        if (qName.equalsIgnoreCase("item")) {
+            currentArticle = new Article();
+        }
         chars = new StringBuffer();
     }
 
@@ -86,21 +89,14 @@ public class RssHandler extends DefaultHandler {
             currentArticle.setEncodedContent(chars.toString());
         } else if (localName.equalsIgnoreCase("entry")) {
 
-        }
-
-
-        // Check if looking for article, and if article is complete
-        if (localName.equalsIgnoreCase("entry")) {
+        } else if (qName.equalsIgnoreCase("item")) {
 
             articleList.add(currentArticle);
 
-            currentArticle = new Article();
+            currentArticle = null;
 
             // Lets check if we've hit our limit on number of articles
             articlesAdded++;
-            if (articlesAdded >= ARTICLES_LIMIT) {
-                throw new SAXException();
-            }
         }
     }
 

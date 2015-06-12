@@ -21,6 +21,7 @@
     <string name="new_feed_title_hint">Title</string>
     <string name="new_feed_url_hint">http://put.an.url.there.com/rss</string>
     <string name="button_add">Add Feed</string>
+    <string name="refresh_button">Refresh</string>
 
     <string name="is_url_valid">URL VALID: ?</string>
     <string name="url_is_valid">URL VALID: ✔</string>

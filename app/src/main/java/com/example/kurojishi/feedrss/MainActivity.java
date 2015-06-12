@@ -16,6 +16,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
      * Fragment managing the behaviors, interactions and presentation of the navigation drawer.
      */
     private NavigationDrawerFragment mNavigationDrawerFragment;
+    private RssListFragment mRssFragment;
     /**
      * Used to store the last screen title. For use in .
      */
@@ -43,8 +44,8 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         mNavigationDrawerFragment.setUp(
                 R.id.navigation_drawer,
                 (DrawerLayout) findViewById(R.id.drawer_layout));
-        RssListFragment rssFragment = new RssListFragment();
-        getFragmentManager().beginTransaction().add(R.id.rss_fragment_container, rssFragment).commit();
+        mRssFragment = new RssListFragment();
+        getFragmentManager().beginTransaction().add(R.id.rss_fragment_container, mRssFragment).commit();
 
     }
 
@@ -74,8 +75,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
             case (R.id.new_subscrition):
                 startActivity(new Intent(this, SubscribeActivity.class));
             case (R.id.action_refresh):
-                RssListFragment fragment = (RssListFragment) getFragmentManager().findFragmentById(android.R.id.list);
-                fragment.refreshList();
+                mRssFragment.refreshList();
 
         }
 

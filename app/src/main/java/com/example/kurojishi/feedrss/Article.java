@@ -134,16 +134,20 @@ public class Article implements Serializable, Comparable<Article> {
 
     @Override
     public int compareTo(Article article) {
-        try {
-            SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss Z", Locale.getDefault());
-            Date current = df.parse(pubDate);
-            Date compDate = df.parse(article.getPubDate());
+        if (pubDate != null) {
+            try {
+                SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss ZZZ", Locale.getDefault());
+                Date current = df.parse(pubDate);
+                Date compDate = df.parse(article.getPubDate());
 
-            return current.compareTo(compDate);
+                return current.compareTo(compDate);
 
-        } catch (ParseException e) {
-            Log.e("Parsing Date Error", e.getMessage());
+            } catch (ParseException e) {
+                Log.e("Parsing Date Error", e.getMessage());
+            }
+            return 0;
+        } else {
+            return 0;
         }
-        return 0;
     }
 }

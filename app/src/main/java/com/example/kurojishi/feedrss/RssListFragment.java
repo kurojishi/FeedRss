@@ -76,7 +76,8 @@ public class RssListFragment extends Fragment implements AbsListView.OnItemClick
         SQLiteDatabase db = mFeedDatabase.getReadableDatabase();
         Cursor c = db.query(FeedDB.FeedEntry.TABLE_NAME, feedsProjection, null, null, null, null, null);
         List<URL> urls = new ArrayList<>();
-        for (int i = 0; i >= c.getCount(); i++) {
+        Log.d("Feed Count", Integer.toString(c.getCount()));
+        for (int i = 0; i <= c.getCount() - 1; i++) {
             c.moveToPosition(i);
             String url = c.getString(c.getColumnIndex(FeedDB.FeedEntry.COLUMN_NAME_URL));
             try {

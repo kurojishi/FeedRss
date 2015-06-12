@@ -4,15 +4,14 @@
     tools:context="com.example.kurojishi.feedrss.MainDrawerActivity">
     <item
         android:id="@+id/action_refresh"
-        android:action-layout=""
         android:icon="@android:drawable/ic_menu_rotate"
-        android:title="Refresh"
+        android:title="@string/refresh_button"
         app:showAsAction="always" />
     <item
         android:id="@+id/new_subscrition"
         android:icon="@android:drawable/ic_menu_add"
         android:title="@string/subscribe"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

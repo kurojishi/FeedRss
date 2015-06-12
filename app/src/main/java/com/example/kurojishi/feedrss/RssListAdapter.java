@@ -45,7 +45,7 @@ public class RssListAdapter extends ArrayAdapter<Article> {
             dateView.setText("published by " + article.getAuthor());
         }
         TextView previewView = (TextView) rowView.findViewById(R.id.article_text_preview);
-        previewView.setText(article.getDescription().substring(0, 150));
+        previewView.setText(article.getEncodedContent().substring(0, 150));
 
         if (!article.isRead()) {
             titleView.setTypeface(Typeface.DEFAULT_BOLD);

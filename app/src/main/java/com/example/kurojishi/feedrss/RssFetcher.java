@@ -39,28 +39,30 @@ public class RssFetcher extends AsyncTask<List<URL>, Void, List<Article>> {
     @Override
     protected List<Article> doInBackground(List<URL>... urls) {
         List<Article> articles = new ArrayList<>();
-        RssHandler handler = new RssHandler();
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 
         for (Iterator<URL> iter = urls[0].listIterator(); iter.hasNext(); ) {
             URL url = iter.next();
 
             try {
+
+
                 SAXParser parser = parserFactory.newSAXParser();
                 XMLReader reader = parser.getXMLReader();
 
-                reader.setContentHandler(handler);
+                RssHandler handler = new RssHandler();
 
+                reader.setContentHandler(handler);
                 reader.parse(new InputSource(url.openStream()));
 
                 articles.addAll(handler.getArticleList());
 
             } catch (IOException e) {
                 //This is a Connection Error
-                Log.d("Connection Error", e.getMessage());
+                Log.d("Connection Error", "Url ");
             } catch (SAXException e) {
                 //This is a Parse Error so the link is not an well formed RSS FEED
-                Log.d("Parsing Error", e.getMessage());
+                Log.d("Parsing Error", "feed invalid");
             } catch (ParserConfigurationException e) {
                 Log.e("This Should not Happen", e.getMessage());
                 return null;
@@ -72,8 +74,6 @@ public class RssFetcher extends AsyncTask<List<URL>, Void, List<Article>> {
 
     @Override
     protected void onPostExecute(List<Article> articles) {
-
-
         RssListAdapter adapter = new RssListAdapter(context, articles);
         rssListFragment.setListAdapter(adapter);
         adapter.notifyDataSetChanged();
