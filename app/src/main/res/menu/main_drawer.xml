@@ -3,7 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.kurojishi.feedrss.MainDrawerActivity">
     <item
+        android:id="@+id/action_refresh"
+        android:action-layout=""
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:title="Refresh"
+        app:showAsAction="always" />
+    <item
         android:id="@+id/new_subscrition"
+        android:icon="@android:drawable/ic_menu_add"
         android:title="@string/subscribe"
         app:showAsAction="always" />
     <item
@@ -11,4 +18,5 @@
         android:orderInCategory="100"
         android:title="@string/action_settings"
         app:showAsAction="never" />
+
 </menu>

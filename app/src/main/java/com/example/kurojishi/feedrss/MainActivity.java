@@ -73,6 +73,9 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
                 return true;
             case (R.id.new_subscrition):
                 startActivity(new Intent(this, SubscribeActivity.class));
+            case (R.id.action_refresh):
+                RssListFragment fragment = (RssListFragment) getFragmentManager().findFragmentById(android.R.id.list);
+                fragment.refreshList();
 
         }
 
