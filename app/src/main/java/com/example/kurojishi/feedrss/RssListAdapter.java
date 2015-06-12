@@ -3,13 +3,14 @@ package com.example.kurojishi.feedrss;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
-import android.text.Html;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import org.jsoup.Jsoup;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -49,8 +50,7 @@ public class RssListAdapter extends ArrayAdapter<Article> {
             dateView.setText("published by " + article.getAuthor());
         }
         TextView previewView = (TextView) rowView.findViewById(R.id.article_text_preview);
-
-        previewView.setText(Html.fromHtml(article.getDescription()));
+        previewView.setText(Jsoup.parse(article.getDescription()).text());
 
         if (!article.isRead()) {
             titleView.setTypeface(Typeface.DEFAULT_BOLD);
