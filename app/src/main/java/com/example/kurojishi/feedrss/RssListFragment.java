@@ -1,7 +1,7 @@
 package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
-import android.app.Fragment;
+import android.app.ListFragment;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -30,7 +30,7 @@ import java.util.List;
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
-public class RssListFragment extends Fragment implements AbsListView.OnItemClickListener {
+public class RssListFragment extends ListFragment implements AbsListView.OnItemClickListener {
 
     private OnFragmentInteractionListener mListener;
 
@@ -90,11 +90,6 @@ public class RssListFragment extends Fragment implements AbsListView.OnItemClick
         c.close();
         RssFetcher fetcher = new RssFetcher(this);
         fetcher.execute(urls);
-    }
-
-    public void setListAdapter(ListAdapter adapter) {
-        mAdapter = adapter;
-
     }
 
     @Override
