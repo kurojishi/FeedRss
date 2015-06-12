@@ -32,8 +32,6 @@ import java.util.List;
  */
 public class RssListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
-    private FeedDB mFeedDatabase;
-
     private OnFragmentInteractionListener mListener;
 
     /**
@@ -71,9 +69,9 @@ public class RssListFragment extends Fragment implements AbsListView.OnItemClick
     }
 
     public void refreshList() {
-        mFeedDatabase = new FeedDB(getActivity().getBaseContext());
+        FeedDB feedDatabase = new FeedDB(getActivity().getBaseContext());
         String[] feedsProjection = {FeedDB.FeedEntry.COLUMN_NAME_URL, FeedDB.FeedEntry._ID};
-        SQLiteDatabase db = mFeedDatabase.getReadableDatabase();
+        SQLiteDatabase db = feedDatabase.getReadableDatabase();
         Cursor c = db.query(FeedDB.FeedEntry.TABLE_NAME, feedsProjection, null, null, null, null, null);
         List<URL> urls = new ArrayList<>();
         Log.d("Feed Count", Integer.toString(c.getCount()));

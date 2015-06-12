@@ -27,13 +27,12 @@ public class RssListAdapter extends ArrayAdapter<Article> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Activity activity = (Activity) getContext();
-        View rowView = activity.getLayoutInflater().inflate(R.layout.article_item_list, null);
         Article article = getItem(position);
 
-        TextView titleView = (TextView) rowView.findViewById(R.id.article_title_text);
+        TextView titleView = (TextView) convertView.findViewById(R.id.article_title_text);
         titleView.setText(article.getTitle());
 
-        TextView dateView = (TextView) rowView.findViewById(R.id.article_title_text);
+        TextView dateView = (TextView) convertView.findViewById(R.id.article_date_author);
         SimpleDateFormat dateformatter = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss Z", Locale.getDefault());
         Date date;
         String pubDate;
@@ -44,13 +43,13 @@ public class RssListAdapter extends ArrayAdapter<Article> {
             Log.e("DATE PARSING", "Error parsing date..");
             dateView.setText("published by " + article.getAuthor());
         }
-        TextView previewView = (TextView) rowView.findViewById(R.id.article_text_preview);
+        TextView previewView = (TextView) convertView.findViewById(R.id.article_text_preview);
         previewView.setText(article.getEncodedContent().substring(0, 150));
 
         if (!article.isRead()) {
             titleView.setTypeface(Typeface.DEFAULT_BOLD);
         }
 
-        return rowView;
+        return convertView;
     }
 }
