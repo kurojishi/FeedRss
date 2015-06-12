@@ -66,6 +66,7 @@ public class SubscribeActivity extends Activity {
     }
 
     public void addFeed(View view) {
+        //TODO: don't add anything if there is a alrady the same feed
         FeedDB feedDB = new FeedDB(view.getContext());
         SQLiteDatabase db = feedDB.getWritableDatabase();
         ContentValues values = new ContentValues();

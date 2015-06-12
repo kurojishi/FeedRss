@@ -2,37 +2,37 @@ package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
 import android.app.Fragment;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.example.kurojishi.feedrss.dummy.DummyContent;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A fragment representing a list of Items.
- * <p>
+ * <p/>
  * Large screen devices (such as tablets) are supported by replacing the ListView
  * with a GridView.
- * <p>
+ * <p/>
  * Activities containing this fragment MUST implement the {@link OnFragmentInteractionListener}
  * interface.
  */
 public class RssListFragment extends Fragment implements AbsListView.OnItemClickListener {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private FeedDB mFeedDatabase;
 
     private OnFragmentInteractionListener mListener;
 
@@ -58,8 +58,6 @@ public class RssListFragment extends Fragment implements AbsListView.OnItemClick
     public static RssListFragment newInstance(String param1, String param2) {
         RssListFragment fragment = new RssListFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -68,14 +66,36 @@ public class RssListFragment extends Fragment implements AbsListView.OnItemClick
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+        refreshList();
 
-        // TODO: Change Adapter to display your content
-        mAdapter = new ArrayAdapter<DummyContent.DummyItem>(getActivity(),
-                android.R.layout.simple_list_item_1, android.R.id.text1, DummyContent.ITEMS);
+    }
+
+    public void refreshList() {
+        mFeedDatabase = new FeedDB(getActivity().getBaseContext());
+        String[] feedsProjection = {FeedDB.FeedEntry.COLUMN_NAME_URL, FeedDB.FeedEntry._ID};
+        SQLiteDatabase db = mFeedDatabase.getReadableDatabase();
+        Cursor c = db.query(FeedDB.FeedEntry.TABLE_NAME, feedsProjection, null, null, null, null, null);
+        List<URL> urls = new ArrayList<>();
+        for (int i = 0; i >= c.getCount(); i++) {
+            c.moveToPosition(i);
+            String url = c.getString(c.getColumnIndex(FeedDB.FeedEntry.COLUMN_NAME_URL));
+            try {
+                urls.add(new URL(url));
+            } catch (MalformedURLException e) {
+                Log.e("Malformed URL", e.getMessage());
+                String selection = FeedDB.FeedEntry._ID + " LIKE ?";
+                String[] selectionArgs = {String.valueOf(c.getString(c.getColumnIndex(FeedDB.FeedEntry._ID)))};
+                db.delete(FeedDB.FeedEntry.TABLE_NAME, selection, selectionArgs);
+            }
+        }
+        c.close();
+        RssFetcher fetcher = new RssFetcher(this);
+        fetcher.execute(urls);
+    }
+
+    public void setListAdapter(ListAdapter adapter) {
+        mAdapter = adapter;
+
     }
 
     @Override
@@ -137,7 +157,7 @@ public class RssListFragment extends Fragment implements AbsListView.OnItemClick
      * fragment to allow an interaction in this fragment to be communicated
      * to the activity and potentially other fragments contained in that
      * activity.
-     * <p>
+     * <p/>
      * See the Android Training lesson <a href=
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.

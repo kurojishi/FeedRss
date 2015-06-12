@@ -1,5 +1,7 @@
 package com.example.kurojishi.feedrss;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -22,9 +24,21 @@ import javax.xml.parsers.SAXParserFactory;
  * Created by kurojishi on 6/11/15.
  */
 public class RssFetcher extends AsyncTask<List<URL>, Void, List<Article>> {
+
+    private Context context;
+    private RssListFragment rssListFragment;
+    private ProgressDialog progressDialog;
+
+    public RssFetcher(RssListFragment activity) {
+        context = activity.getActivity();
+        rssListFragment = activity;
+        progressDialog = new ProgressDialog(context);
+        progressDialog.setMessage("Loading");
+    }
+
     @Override
     protected List<Article> doInBackground(List<URL>... urls) {
-        List<Article> articles = new ArrayList<Article>();
+        List<Article> articles = new ArrayList<>();
         RssHandler handler = new RssHandler();
         SAXParserFactory parserFactory = SAXParserFactory.newInstance();
 
@@ -58,6 +72,11 @@ public class RssFetcher extends AsyncTask<List<URL>, Void, List<Article>> {
 
     @Override
     protected void onPostExecute(List<Article> articles) {
-        super.onPostExecute(articles);
+
+
+        RssListAdapter adapter = new RssListAdapter(context, articles);
+        rssListFragment.setListAdapter(adapter);
+        adapter.notifyDataSetChanged();
+        progressDialog.dismiss();
     }
 }

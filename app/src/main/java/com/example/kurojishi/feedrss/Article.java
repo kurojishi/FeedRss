@@ -24,9 +24,10 @@ import android.util.Log;
 
 import java.io.Serializable;
 import java.net.URL;
-import java.text.DateFormat;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 public class Article implements Serializable, Comparable<Article> {
 
@@ -134,8 +135,9 @@ public class Article implements Serializable, Comparable<Article> {
     @Override
     public int compareTo(Article article) {
         try {
-            Date current = DateFormat.getDateInstance().parse(pubDate);
-            Date compDate = DateFormat.getDateInstance().parse(article.getPubDate());
+            SimpleDateFormat df = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss Z", Locale.getDefault());
+            Date current = df.parse(pubDate);
+            Date compDate = df.parse(article.getPubDate());
 
             return current.compareTo(compDate);
 
