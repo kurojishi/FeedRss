@@ -33,14 +33,14 @@ public class RssListAdapter extends ArrayAdapter<RSSItemContainer> {
         RSSItemContainer article = getItem(position);
 
         TextView titleView = (TextView) rowView.findViewById(R.id.article_title_text);
-        titleView.setText(article.getRssItem().getTitle());
+        titleView.setText(article.getTitle());
 
         TextView dateView = (TextView) rowView.findViewById(R.id.article_date_author);
         SimpleDateFormat dateformatter = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss Z", Locale.getDefault());
         Date date;
-        if (article.getRssItem().getPubDate() != null) {
+        if (article.getPubDate() != null) {
             try {
-                date = dateformatter.parse(article.getRssItem().getPubDate().toString());
+                date = dateformatter.parse(article.getPubDate().toString());
                 dateView.setText("published " + DateUtils.getRelativeTimeSpanString(date.getTime()) + " by " + article.getAuthor());
             } catch (ParseException e) {
                 Log.w("DATE PARSING", "Error parsing date..");
@@ -50,7 +50,7 @@ public class RssListAdapter extends ArrayAdapter<RSSItemContainer> {
             dateView.setText("published by " + article.getAuthor());
         }
         TextView previewView = (TextView) rowView.findViewById(R.id.article_text_preview);
-        previewView.setText(Jsoup.parse(article.getRssItem().getDescription()).text());
+        previewView.setText(Jsoup.parse(article.getDescription()).text());
 
         if (!article.getIsRead()) {
             titleView.setTypeface(Typeface.DEFAULT_BOLD);

@@ -15,7 +15,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="top"
         android:clickable="true"
-        android:onClick="openLink"
+        android:onClick="openFeed"
+        android:paddingBottom="15dip"
+        android:paddingEnd="8dip"
+        android:paddingStart="15dip" />
+
+    <TextView
+        android:id="@+id/author_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_view"
+        android:layout_gravity="top"
+        android:clickable="true"
         android:paddingBottom="15dip"
         android:paddingEnd="8dip"
         android:paddingStart="15dip" />
@@ -23,9 +34,9 @@
     <WebView
         android:id="@+id/web_article_visualizer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
-        android:layout_below="@id/title_view"
+        android:layout_below="@id/author_view"
         android:paddingBottom="15dip"
         android:paddingEnd="8dip"
         android:paddingStart="15dip" />

@@ -1,17 +1,40 @@
 package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.webkit.WebView;
+import android.widget.TextView;
 
 
 public class ReadFeedActivity extends Activity {
 
+    private RSSItemContainer article;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_read_feed);
+        Intent intent = getIntent();
+        article = (RSSItemContainer) intent.getSerializableExtra("RSSItemContainer");
+
+
+        TextView titleView = (TextView) findViewById(R.id.title_view);
+        titleView.setText(article.getTitle());
+        TextView authorView = (TextView) findViewById(R.id.author_view);
+        authorView.setText(article.getAuthor());
+        WebView webView = (WebView) findViewById(R.id.web_article_visualizer);
+        webView.loadData(article.getContent(), "text/html", null);
+        webView.getSettings().setBuiltInZoomControls(true);
+    }
+
+    public void openFeed(View view) {
+        Uri uri = Uri.parse(article.getLink().toString());
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
     }
 
     @Override

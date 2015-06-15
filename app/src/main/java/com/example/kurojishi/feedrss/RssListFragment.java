@@ -2,6 +2,7 @@ package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -52,13 +53,6 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
     public RssListFragment() {
     }
 
-    // TODO: Rename and change types of parameters
-    public static RssListFragment newInstance(String param1, String param2) {
-        RssListFragment fragment = new RssListFragment();
-        Bundle args = new Bundle();
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -144,6 +138,12 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
         if (emptyView instanceof TextView) {
             ((TextView) emptyView).setText(emptyText);
         }
+    }
+
+    public void openItem(View view, RSSItemContainer article) {
+        Intent intent = new Intent(view.getContext(), ReadFeedActivity.class);
+        intent.putExtra("RSSItemContainer", article);
+        startActivity(intent);
     }
 
     /**
