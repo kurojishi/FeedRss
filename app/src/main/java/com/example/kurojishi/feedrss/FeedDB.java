@@ -12,21 +12,26 @@ import android.provider.BaseColumns;
 public class FeedDB extends SQLiteOpenHelper {
 
     public static final String DATABSE_NAME = "FeedReader.db";
-
-
     private static final String TEXT_TYPE = " TEXT";
     private static final String COMMA_SEP = ",";
     private static final String SQL_CREATE_FEEDS_ENTRIES =
             "CREATE TABLE " + FeedEntry.TABLE_NAME + " (" +
-                    FeedEntry._ID + " INTEGER PRIMARY KEY," +
+                    FeedEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
                     FeedEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
                     FeedEntry.COLUMN_NAME_URL + TEXT_TYPE + " )";
-
-    private static final String SQL_DELETE_ENTRIES =
-            "DROP TABLE IF EXISTS " + FeedEntry.TABLE_NAME;
-
-
-    private static final int DATABASE_VERSION = 6;
+    private static final String CREATE_ARTICLE_TABLE =
+            "CREATE TABLE " + ArticleEntry.TABLE_NAME + " (" +
+                    ArticleEntry._ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    ArticleEntry.COLUMN_NAME_GUID + TEXT_TYPE + COMMA_SEP +
+                    ArticleEntry.COLUMN_NAME_TITLE + TEXT_TYPE + COMMA_SEP +
+                    ArticleEntry.COLUMN_NAME_DESCRIPTION + TEXT_TYPE + COMMA_SEP +
+                    ArticleEntry.COLUMN_NAME_URL + TEXT_TYPE + COMMA_SEP +
+                    ArticleEntry.COLUMN_NAME_PUBDATE + TEXT_TYPE + COMMA_SEP +
+                    ArticleEntry.COLUMN_NAME_AUTHOR + TEXT_TYPE + COMMA_SEP +
+                    ArticleEntry.COLUMN_NAME_READ + "boolen," +
+                    ArticleEntry.COLUMN_NAME_FEED_TITLE + TEXT_TYPE + ")";
+    private static final String DROP_ARTICLE_TABLE = "DROP TABLE IF EXISTS " + ArticleEntry.TABLE_NAME;
+    private static final int DATABASE_VERSION = 7;
 
     public FeedDB(Context context) {
         super(context, DATABSE_NAME, null, DATABASE_VERSION);
@@ -35,10 +40,12 @@ public class FeedDB extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         sqLiteDatabase.execSQL(SQL_CREATE_FEEDS_ENTRIES);
+        sqLiteDatabase.execSQL(CREATE_ARTICLE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL(DROP_ARTICLE_TABLE);
     }
 
     /* Inner class that defines the table contents */
@@ -59,4 +66,6 @@ public class FeedDB extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_READ = "read";
         public static final String COLUMN_NAME_FEED_TITLE = "feed_title";
     }
+
+
 }
