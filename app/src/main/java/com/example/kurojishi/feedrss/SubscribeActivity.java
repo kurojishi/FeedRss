@@ -70,14 +70,13 @@ public class SubscribeActivity extends Activity {
         FeedDB feedDB = new FeedDB(view.getContext());
         SQLiteDatabase db = feedDB.getWritableDatabase();
         ContentValues values = new ContentValues();
-
-
         values.put(FeedDB.FeedEntry.COLUMN_NAME_TITLE, mEditTitle.getText().toString());
         values.put(FeedDB.FeedEntry.COLUMN_NAME_URL, mEditUrl.getText().toString());
 
         long newRow = db.insert(FeedDB.FeedEntry.TABLE_NAME, null, values);
         Log.d("how many row", String.valueOf(newRow));
         finish();
+
     }
 
     public void validateUrl(View view) {
