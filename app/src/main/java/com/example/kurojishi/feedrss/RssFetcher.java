@@ -84,6 +84,7 @@ public class RssFetcher extends AsyncTask<List<URL>, Void, List<RSSItemContainer
         wdb.close();*/
         RssListAdapter adapter = new RssListAdapter(context, articles);
         rssListFragment.setListAdapter(adapter);
+        rssListFragment.setArticles(articles);
         adapter.notifyDataSetChanged();
         progressDialog.dismiss();
     }

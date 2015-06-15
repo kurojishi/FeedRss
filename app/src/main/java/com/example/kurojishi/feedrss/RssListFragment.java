@@ -50,14 +50,20 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
+
+    private List<RSSItemContainer> mArticles;
+
     public RssListFragment() {
     }
 
+    public void setArticles(List<RSSItemContainer> articles) {
+        mArticles = articles;
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         refreshList();
 
     }
