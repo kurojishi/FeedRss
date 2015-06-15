@@ -16,17 +16,13 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
+import org.mcsoxford.rss.RSSReader;
+import org.mcsoxford.rss.RSSReaderException;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 
 
 public class SubscribeActivity extends Activity {
@@ -115,32 +111,25 @@ public class SubscribeActivity extends Activity {
             if (urls.length > 1) {
                 return null;
             }
-
-            RssHandler handler = new RssHandler();
-            SAXParserFactory parserFactory = SAXParserFactory.newInstance();
-
+            RSSReader reader = new RSSReader();
 
             URL url = urls[0];
             try {
-                SAXParser parser = parserFactory.newSAXParser();
-                XMLReader reader = parser.getXMLReader();
-
-                reader.setContentHandler(handler);
-
-                reader.parse(new InputSource(url.openStream()));
+                InputStream stream = url.openStream();
+                stream.close();
 
             } catch (IOException e) {
                 //This is a Connection Error
                 Log.d("Connection Error", e.getMessage());
                 return 1;
-            } catch (SAXException e) {
+            }
+            try {
+                reader.load(url.toString());
+
+            } catch (RSSReaderException e) {
                 //This is a Parse Error so the link is not an well formed RSS FEED
                 Log.d("Parsing Error", e.getMessage());
                 return 2;
-            } catch (ParserConfigurationException e) {
-                Log.e("This Should not Happen", e.getMessage());
-                finish();
-                return null;
             }
             return 0;
         }

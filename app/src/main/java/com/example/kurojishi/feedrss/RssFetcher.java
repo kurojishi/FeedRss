@@ -5,25 +5,21 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
-import org.xml.sax.XMLReader;
+import org.mcsoxford.rss.RSSFeed;
+import org.mcsoxford.rss.RSSItem;
+import org.mcsoxford.rss.RSSReader;
+import org.mcsoxford.rss.RSSReaderException;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
 /**
  * Created by kurojishi on 6/11/15.
  */
-public class RssFetcher extends AsyncTask<List<URL>, Void, List<Article>> {
+public class RssFetcher extends AsyncTask<List<URL>, Void, List<RSSItemContainer>> {
 
     private Context context;
     private RssListFragment rssListFragment;
@@ -37,35 +33,20 @@ public class RssFetcher extends AsyncTask<List<URL>, Void, List<Article>> {
     }
 
     @Override
-    protected List<Article> doInBackground(List<URL>... urls) {
-        List<Article> articles = new ArrayList<>();
-        SAXParserFactory parserFactory = SAXParserFactory.newInstance();
+    protected List<RSSItemContainer> doInBackground(List<URL>... urls) {
+        List<RSSItemContainer> articles = new ArrayList<>();
 
         for (Iterator<URL> iter = urls[0].listIterator(); iter.hasNext(); ) {
             URL url = iter.next();
-
+            RSSReader reader = new RSSReader();
             try {
+                RSSFeed feed = reader.load(url.toString());
+                for (RSSItem item : feed.getItems()) {
+                    articles.add(new RSSItemContainer(feed.getTitle(), false, item));
+                }
 
-
-                SAXParser parser = parserFactory.newSAXParser();
-                XMLReader reader = parser.getXMLReader();
-
-                RssHandler handler = new RssHandler();
-
-                reader.setContentHandler(handler);
-                reader.parse(new InputSource(url.openStream()));
-
-                articles.addAll(handler.getArticleList());
-
-            } catch (IOException e) {
-                //This is a Connection Error
-                Log.d("Connection Error", "Url ");
-            } catch (SAXException e) {
-                //This is a Parse Error so the link is not an well formed RSS FEED
-                Log.d("Parsing Error", "feed invalid");
-            } catch (ParserConfigurationException e) {
-                Log.e("This Should not Happen", e.getMessage());
-                return null;
+            } catch (RSSReaderException e) {
+                Log.d("Failed to load feed", "chiappomanzia");
             }
         }
         Collections.sort(articles);
@@ -73,7 +54,7 @@ public class RssFetcher extends AsyncTask<List<URL>, Void, List<Article>> {
     }
 
     @Override
-    protected void onPostExecute(List<Article> articles) {
+    protected void onPostExecute(List<RSSItemContainer> articles) {
         RssListAdapter adapter = new RssListAdapter(context, articles);
         rssListFragment.setListAdapter(adapter);
         adapter.notifyDataSetChanged();

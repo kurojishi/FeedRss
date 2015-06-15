@@ -21,8 +21,8 @@ import java.util.Locale;
 /**
  * Created by kurojishi on 6/11/15.
  */
-public class RssListAdapter extends ArrayAdapter<Article> {
-    public RssListAdapter(Context context, List<Article> objects) {
+public class RssListAdapter extends ArrayAdapter<RSSItemContainer> {
+    public RssListAdapter(Context context, List<RSSItemContainer> objects) {
         super(context, R.layout.article_item_list, objects);
     }
 
@@ -30,29 +30,29 @@ public class RssListAdapter extends ArrayAdapter<Article> {
     public View getView(int position, View convertView, ViewGroup parent) {
         Activity activity = (Activity) getContext();
         View rowView = activity.getLayoutInflater().inflate(R.layout.article_item_list, null);
-        Article article = getItem(position);
+        RSSItemContainer article = getItem(position);
 
         TextView titleView = (TextView) rowView.findViewById(R.id.article_title_text);
-        titleView.setText(article.getTitle());
+        titleView.setText(article.getRssItem().getTitle());
 
         TextView dateView = (TextView) rowView.findViewById(R.id.article_date_author);
         SimpleDateFormat dateformatter = new SimpleDateFormat("EEE, dd MMM yyyy kk:mm:ss Z", Locale.getDefault());
         Date date;
-        if (article.getPubDate() != null) {
+        if (article.getRssItem().getPubDate() != null) {
             try {
-                date = dateformatter.parse(article.getPubDate());
+                date = dateformatter.parse(article.getRssItem().getPubDate().toString());
                 dateView.setText("published " + DateUtils.getRelativeTimeSpanString(date.getTime()) + " by " + article.getAuthor());
             } catch (ParseException e) {
-                Log.e("DATE PARSING", "Error parsing date..");
+                Log.w("DATE PARSING", "Error parsing date..");
                 dateView.setText("published by " + article.getAuthor());
             }
         } else {
             dateView.setText("published by " + article.getAuthor());
         }
         TextView previewView = (TextView) rowView.findViewById(R.id.article_text_preview);
-        previewView.setText(Jsoup.parse(article.getDescription()).text());
+        previewView.setText(Jsoup.parse(article.getRssItem().getDescription()).text());
 
-        if (!article.isRead()) {
+        if (!article.getIsRead()) {
             titleView.setTypeface(Typeface.DEFAULT_BOLD);
         }
 
