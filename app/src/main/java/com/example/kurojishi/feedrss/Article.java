@@ -44,7 +44,15 @@ public class Article implements Serializable, Comparable<Article> {
     private boolean read;
     private boolean offline;
     private long dbId;
+    private String feedTitle;
 
+    public String getFeedTitle() {
+        return feedTitle;
+    }
+
+    public void setFeedTitle(String feedTitle) {
+        this.feedTitle = feedTitle;
+    }
 
     public String getGuid() {
         return guid;

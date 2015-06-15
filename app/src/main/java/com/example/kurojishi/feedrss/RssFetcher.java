@@ -79,4 +79,6 @@ public class RssFetcher extends AsyncTask<List<URL>, Void, List<Article>> {
         adapter.notifyDataSetChanged();
         progressDialog.dismiss();
     }
+
+
 }
