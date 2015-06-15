@@ -1,12 +1,12 @@
 package com.example.kurojishi.feedrss;
 
+import android.app.Activity;
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ReadFeedActivity extends ActionBarActivity {
+public class ReadFeedActivity extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

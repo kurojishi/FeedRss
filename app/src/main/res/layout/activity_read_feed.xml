@@ -6,11 +6,27 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:weightSum="1"
     tools:context="com.example.kurojishi.feedrss.ReadFeedActivity">
 
     <TextView
-        android:layout_width="wrap_content"
+        android:id="@+id/title_view"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:layout_gravity="top"
+        android:clickable="true"
+        android:onClick="openLink"
+        android:paddingBottom="15dip"
+        android:paddingEnd="8dip"
+        android:paddingStart="15dip" />
 
+    <WebView
+        android:id="@+id/web_article_visualizer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_below="@id/title_view"
+        android:paddingBottom="15dip"
+        android:paddingEnd="8dip"
+        android:paddingStart="15dip" />
 </RelativeLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/article_row_layout"
     style="?android:attr/textAppearanceLarge"
@@ -38,4 +38,4 @@
         android:paddingStart="15dip"
         android:paddingTop="2dp" />
 
-</LinearLayout>
+</RelativeLayout>
