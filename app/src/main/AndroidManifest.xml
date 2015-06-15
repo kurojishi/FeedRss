@@ -3,6 +3,7 @@
     package="com.example.kurojishi.feedrss">
 
     <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -25,8 +26,14 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kurojishi.feedrss.MainActivity" />
         </activity>
-
+        <activity
+            android:name=".ReadFeedActivity"
+            android:label="@string/title_activity_read_feed"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kurojishi.feedrss.MainActivity" />
+        </activity>
     </application>
-
 
 </manifest>

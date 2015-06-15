@@ -55,6 +55,33 @@ public class RssFetcher extends AsyncTask<List<URL>, Void, List<RSSItemContainer
 
     @Override
     protected void onPostExecute(List<RSSItemContainer> articles) {
+        /*FeedDB helper = new FeedDB(context);
+        SQLiteDatabase rdb = helper.getReadableDatabase();
+        SQLiteDatabase wdb = helper.getWritableDatabase();
+        String[] projection = {
+                FeedDB.ArticleEntry.COLUMN_NAME_READ
+        };
+        for (RSSItemContainer article: articles) {
+            String selection = FeedDB.ArticleEntry.COLUMN_NAME_URL + " = '" + article.getRssItem().getLink().toString() + "'";
+            Cursor c = rdb.query(FeedDB.ArticleEntry.TABLE_NAME,projection,selection, null, null, null, null);
+            if (c.getCount() <=0){
+                ContentValues values = new ContentValues();
+                values.put(FeedDB.ArticleEntry.COLUMN_NAME_AUTHOR, article.getAuthor());
+                values.put(FeedDB.ArticleEntry.COLUMN_NAME_CONTENT, article.getRssItem().getContent());
+                values.put(FeedDB.ArticleEntry.COLUMN_NAME_TITLE, article.getRssItem().getTitle());
+                values.put(FeedDB.ArticleEntry.COLUMN_NAME_DESCRIPTION, article.getRssItem().getDescription());
+                values.put(FeedDB.ArticleEntry.COLUMN_NAME_URL, article.getRssItem().getLink().toString());
+                values.put(FeedDB.ArticleEntry.COLUMN_NAME_PUBDATE, article.getRssItem().getPubDate().toString());
+                values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, article.getIsRead());
+            } else {
+                c.moveToFirst();
+                article.setIsRead(c.getInt(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_READ))>0);
+            }
+            c.close();
+
+        }
+        rdb.close();
+        wdb.close();*/
         RssListAdapter adapter = new RssListAdapter(context, articles);
         rssListFragment.setListAdapter(adapter);
         adapter.notifyDataSetChanged();
