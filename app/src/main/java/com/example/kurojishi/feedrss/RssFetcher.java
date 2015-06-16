@@ -76,7 +76,7 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
                 }
 
             } catch (RSSReaderException e) {
-                Log.d("Failed to load feed", "chiappomanzia");
+                Log.d("Failed to load feed", "");
             }
         }
         Collections.sort(articles);
