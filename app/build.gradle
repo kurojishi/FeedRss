@@ -34,4 +34,5 @@ dependencies {
     compile 'com.android.support:appcompat-v7:22.2.0'
     compile 'org.jsoup:jsoup:1.8.2'
     compile 'com.github.ahorn:android-rss:cf40b89fa4a28dc8f603fae7349ba8102e55090d'
+    compile 'com.android.support:support-v4:22.2.0'
 }

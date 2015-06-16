@@ -25,18 +25,28 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kurojishi.feedrss.MainActivity" />
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
+
                 <data
                     android:mimeType="text/plain"
                     android:scheme="http" />
-                <category android:name="android.intent.category.DEFAULT" />
 
+                <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ReadFeedActivity"
             android:label="@string/title_activity_read_feed"
+            android:parentActivityName=".MainActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.example.kurojishi.feedrss.MainActivity" />
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="@string/title_activity_settings"
             android:parentActivityName=".MainActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
