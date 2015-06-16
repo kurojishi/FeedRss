@@ -86,14 +86,14 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
     @Override
     protected void onPostExecute(List<RSSItemContainer> articles) {
         FeedDB helper = new FeedDB(context);
-        SQLiteDatabase rdb = helper.getReadableDatabase();
-        SQLiteDatabase wdb = helper.getWritableDatabase();
+        SQLiteDatabase db = helper.getWritableDatabase();
         String[] projection = {
-                FeedDB.ArticleEntry.COLUMN_NAME_READ
+                FeedDB.ArticleEntry.COLUMN_NAME_READ,
+                FeedDB.ArticleEntry._ID
         };
         for (RSSItemContainer article: articles) {
             String selection = FeedDB.ArticleEntry.COLUMN_NAME_URL + " = '" + article.getLink() + "'";
-            Cursor c = rdb.query(FeedDB.ArticleEntry.TABLE_NAME,projection,selection, null, null, null, null);
+            Cursor c = db.query(FeedDB.ArticleEntry.TABLE_NAME, projection, selection, null, null, null, null);
             if (c.getCount() <=0){
                 ContentValues values = new ContentValues();
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_AUTHOR, article.getAuthor());
@@ -103,16 +103,16 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_URL, article.getLink());
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_PUBDATE, article.getPubDate().toString());
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, article.getIsRead());
-                wdb.insert(FeedDB.ArticleEntry.TABLE_NAME, null, values);
+                db.insert(FeedDB.ArticleEntry.TABLE_NAME, null, values);
             } else {
                 c.moveToFirst();
-                article.setIsRead(c.getInt(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_READ))>0);
+                article.setIsRead(c.getInt(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_READ)) > 0);
+                article.setDbId(c.getInt(c.getColumnIndex(FeedDB.ArticleEntry._ID)));
             }
             c.close();
 
         }
-        rdb.close();
-        wdb.close();
+        db.close();
         RssListAdapter adapter = new RssListAdapter(context, articles);
         rssListFragment.setListAdapter(adapter);
         adapter.notifyDataSetChanged();

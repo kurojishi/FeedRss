@@ -19,6 +19,7 @@ public class RSSItemContainer implements Serializable, Comparable<RSSItemContain
     private String content;
     private String link;
     private Integer feedId;
+    private Integer dbId;
 
     public RSSItemContainer(String author, Boolean isRead, RSSItem item, Integer id) {
         Author = author;
@@ -29,6 +30,14 @@ public class RSSItemContainer implements Serializable, Comparable<RSSItemContain
         content = item.getContent();
         link = item.getLink().toString();
         feedId = id;
+    }
+
+    public Integer getDbId() {
+        return dbId;
+    }
+
+    public void setDbId(Integer dbId) {
+        this.dbId = dbId;
     }
 
     public Integer getFeedId() {

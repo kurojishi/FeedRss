@@ -2,7 +2,9 @@ package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
 import android.app.ListFragment;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -130,7 +132,15 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
 
     public void openItem(View view, RSSItemContainer article) {
         Intent intent = new Intent(view.getContext(), ReadFeedActivity.class);
-        article.setIsRead(true);
+        if (!article.getIsRead()) {
+            article.setIsRead(true);
+            FeedDB helper = new FeedDB(view.getContext());
+            SQLiteDatabase db = helper.getWritableDatabase();
+            ContentValues values = new ContentValues();
+            values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, 1);
+            String where = FeedDB.ArticleEntry._ID + " = " + article.getDbId();
+            db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
+        }
         intent.putExtra("Article", article);
         startActivity(intent);
     }
