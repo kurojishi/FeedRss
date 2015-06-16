@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
 import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.kurojishi.feedrss.dummy.DummyContent;
@@ -108,6 +109,11 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
     }
 
     @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        openItem(v, mArticles.get(position));
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         try {
@@ -148,7 +154,8 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
 
     public void openItem(View view, RSSItemContainer article) {
         Intent intent = new Intent(view.getContext(), ReadFeedActivity.class);
-        intent.putExtra("RSSItemContainer", article);
+        article.setIsRead(true);
+        intent.putExtra("Article", article);
         startActivity(intent);
     }
 

@@ -1,7 +1,5 @@
 package com.example.kurojishi.feedrss;
 
-import android.net.Uri;
-
 import org.mcsoxford.rss.RSSItem;
 
 import java.io.Serializable;
@@ -19,7 +17,7 @@ public class RSSItemContainer implements Serializable, Comparable<RSSItemContain
     private String title;
     private String description;
     private String content;
-    private Uri link;
+    private String link;
 
     public RSSItemContainer(String author, Boolean isRead, RSSItem item) {
         Author = author;
@@ -28,55 +26,31 @@ public class RSSItemContainer implements Serializable, Comparable<RSSItemContain
         title = item.getTitle();
         description = item.getDescription();
         content = item.getContent();
-        link = item.getLink();
+        link = item.getLink().toString();
     }
 
     public String getContent() {
         return content;
     }
 
-    public void setContent(String content) {
-        this.content = content;
-    }
-
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public Uri getLink() {
+    public String getLink() {
         return link;
-    }
-
-    public void setLink(Uri link) {
-        this.link = link;
     }
 
     public Date getPubDate() {
         return pubDate;
     }
 
-    public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
-    }
-
     public String getTitle() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
     public String getAuthor() {
         return Author;
-    }
-
-    public void setAuthor(String author) {
-        Author = author;
     }
 
     public Boolean getIsRead() {

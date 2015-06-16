@@ -10,7 +10,7 @@
     tools:context="com.example.kurojishi.feedrss.ReadFeedActivity">
 
     <TextView
-        android:id="@+id/title_view"
+        android:id="@+id/read_feed_title"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="top"
@@ -24,7 +24,7 @@
         android:id="@+id/author_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/title_view"
+        android:layout_below="@id/read_feed_title"
         android:layout_gravity="top"
         android:clickable="true"
         android:paddingBottom="15dip"
@@ -32,7 +32,7 @@
         android:paddingStart="15dip" />
 
     <WebView
-        android:id="@+id/web_article_visualizer"
+        android:id="@+id/web_article_view"
         android:layout_width="match_parent"
         android:layout_height="fill_parent"
         android:layout_alignParentBottom="true"
