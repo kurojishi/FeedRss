@@ -25,6 +25,14 @@
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kurojishi.feedrss.MainActivity" />
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <data
+                    android:mimeType="text/plain"
+                    android:scheme="http" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+            </intent-filter>
         </activity>
         <activity
             android:name=".ReadFeedActivity"
