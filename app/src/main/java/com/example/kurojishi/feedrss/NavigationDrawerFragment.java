@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +21,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Fragment used for managing interactions for and presentation of a navigation drawer.
@@ -95,17 +100,50 @@ public class NavigationDrawerFragment extends Fragment {
                 selectItem(position);
             }
         });
+        FeedDB helper = new FeedDB(mDrawerListView.getContext());
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String[] projection = {
+                FeedDB.FeedEntry.COLUMN_NAME_TITLE,
+                FeedDB.FeedEntry._ID
+        };
+        Cursor c = db.query(FeedDB.FeedEntry.TABLE_NAME, projection, null, null, null, null, null);
+        List<String> titles = new ArrayList<>();
+        List<Integer> unread = new ArrayList<>();
+        for (int i = 0; i <= c.getCount() - 1; i++) {
+            c.moveToPosition(i);
+            titles.add(c.getString(c.getColumnIndex(FeedDB.FeedEntry.COLUMN_NAME_TITLE)) + " " + getUnread(mDrawerListView, c.getInt(c.getColumnIndex(FeedDB.FeedEntry._ID))).toString());
+        }
+        String[] sections = new String[titles.size()];
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                new String[]{
-                        getString(R.string.title_section1),
-                        getString(R.string.title_section2),
-                        getString(R.string.title_section3),
-                }));
+                titles.toArray(sections)));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
+        db.close();
         return mDrawerListView;
+    }
+
+    private Integer getUnread(View view, Integer id) {
+        FeedDB helper = new FeedDB(view.getContext());
+        SQLiteDatabase db = helper.getWritableDatabase();
+        String[] projection = {
+                FeedDB.ArticleEntry._ID,
+                FeedDB.ArticleEntry.COLUMN_NAME_READ
+        };
+        String where = FeedDB.ArticleEntry.COLUMN_NAME_READ + "= 0 AND " + FeedDB.ArticleEntry.COLUMN_NAME_FEED_ID + " = " + id;
+        Cursor c = db.query(FeedDB.ArticleEntry.TABLE_NAME, projection, where, null, null, null, null);
+        Integer count = 0;
+        for (int i = 0; i <= c.getCount() - 1; i++) {
+            c.moveToPosition(i);
+            if (c.getInt(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_READ)) == 0) {
+                count++;
+            }
+        }
+        c.close();
+        db.close();
+        return count;
+
     }
 
     public boolean isDrawerOpen() {

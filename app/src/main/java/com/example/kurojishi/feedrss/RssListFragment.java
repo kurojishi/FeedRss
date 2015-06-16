@@ -140,6 +140,7 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
             values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, 1);
             String where = FeedDB.ArticleEntry._ID + " = " + article.getDbId();
             db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
+            db.close();
         }
         intent.putExtra("Article", article);
         startActivity(intent);
