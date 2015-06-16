@@ -28,13 +28,13 @@ public class FeedDB extends SQLiteOpenHelper {
                     ArticleEntry.COLUMN_NAME_URL + TEXT_TYPE + COMMA_SEP +
                     ArticleEntry.COLUMN_NAME_PUBDATE + TEXT_TYPE + COMMA_SEP +
                     ArticleEntry.COLUMN_NAME_AUTHOR + TEXT_TYPE + COMMA_SEP +
+                    ArticleEntry.COLUMN_NAME_READ + " INTEGER" + COMMA_SEP +
                     ArticleEntry.COLUMN_NAME_FEED_ID + " INTEGER, " +
-                    "FOREING KEY(" + ArticleEntry.COLUMN_NAME_FEED_ID + ") REFERENCES" + FeedEntry.COLUMN_NAME_TITLE + "(" + FeedEntry._ID + ")," +
-                    ArticleEntry.COLUMN_NAME_READ + "BOOLEAN" + ")";
+                    "FOREIGN KEY(" + ArticleEntry.COLUMN_NAME_FEED_ID + ") REFERENCES feeds(" + FeedEntry._ID + "))";
 
     private static final String DROP_ARTICLE_TABLE = "DROP TABLE IF EXISTS " + ArticleEntry.TABLE_NAME;
 
-    private static final int DATABASE_VERSION = 13;
+    private static final int DATABASE_VERSION = 18;
 
     public FeedDB(Context context) {
         super(context, DATABSE_NAME, null, DATABASE_VERSION);
@@ -42,13 +42,12 @@ public class FeedDB extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        sqLiteDatabase.execSQL(CREATE_ARTICLE_TABLE);
         sqLiteDatabase.execSQL(SQL_CREATE_FEEDS_ENTRIES);
+        sqLiteDatabase.execSQL(CREATE_ARTICLE_TABLE);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
-        sqLiteDatabase.execSQL(DROP_ARTICLE_TABLE);
     }
 
     /* Inner class that defines the table contents */

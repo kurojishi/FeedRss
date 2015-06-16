@@ -103,6 +103,7 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_URL, article.getLink());
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_PUBDATE, article.getPubDate().toString());
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, article.getIsRead());
+                wdb.insert(FeedDB.ArticleEntry.TABLE_NAME, null, values);
             } else {
                 c.moveToFirst();
                 article.setIsRead(c.getInt(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_READ))>0);

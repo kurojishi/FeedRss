@@ -2,6 +2,7 @@ package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -27,6 +28,7 @@ public class ReadFeedActivity extends Activity {
 
         TextView titleView = (TextView) findViewById(R.id.read_feed_title);
         titleView.setText(article.getTitle());
+        titleView.setTypeface(Typeface.DEFAULT_BOLD);
         TextView authorView = (TextView) findViewById(R.id.author_view);
         authorView.setText(article.getAuthor());
         WebView webView = (WebView) findViewById(R.id.web_article_view);
