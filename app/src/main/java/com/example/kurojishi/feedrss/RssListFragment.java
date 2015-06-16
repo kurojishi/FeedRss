@@ -3,10 +3,7 @@ package com.example.kurojishi.feedrss;
 import android.app.Activity;
 import android.app.ListFragment;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,9 +15,6 @@ import android.widget.TextView;
 
 import com.example.kurojishi.feedrss.dummy.DummyContent;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -70,27 +64,9 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
     }
 
     public void refreshList() {
-        FeedDB feedDatabase = new FeedDB(getActivity().getBaseContext());
-        String[] feedsProjection = {FeedDB.FeedEntry.COLUMN_NAME_URL, FeedDB.FeedEntry._ID};
-        SQLiteDatabase db = feedDatabase.getReadableDatabase();
-        Cursor c = db.query(FeedDB.FeedEntry.TABLE_NAME, feedsProjection, null, null, null, null, null);
-        List<URL> urls = new ArrayList<>();
-        Log.d("Feed Count", Integer.toString(c.getCount()));
-        for (int i = 0; i <= c.getCount() - 1; i++) {
-            c.moveToPosition(i);
-            String url = c.getString(c.getColumnIndex(FeedDB.FeedEntry.COLUMN_NAME_URL));
-            try {
-                urls.add(new URL(url));
-            } catch (MalformedURLException e) {
-                Log.e("Malformed URL", e.getMessage());
-                String selection = FeedDB.FeedEntry._ID + " LIKE ?";
-                String[] selectionArgs = {String.valueOf(c.getString(c.getColumnIndex(FeedDB.FeedEntry._ID)))};
-                db.delete(FeedDB.FeedEntry.TABLE_NAME, selection, selectionArgs);
-            }
-        }
-        c.close();
+
         RssFetcher fetcher = new RssFetcher(this);
-        fetcher.execute(urls);
+        fetcher.execute();
     }
 
     @Override
