@@ -80,10 +80,6 @@
                 android:value="com.example.kurojishi.feedrss.MainActivity" />
         </activity>
 
-        <service
-            android:name=".FetchRssService"
-            android:enabled="true"
-            android:exported="true"></service>
     </application>
 
 </manifest>

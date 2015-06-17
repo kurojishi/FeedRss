@@ -54,19 +54,11 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         mRssFragment = new RssListFragment();
         getFragmentManager().beginTransaction().add(R.id.rss_fragment_container, mRssFragment).commit();
-        if (isNetworkAvailable()) {
-            startService(new Intent(this, FetchRssService.class));
-        }
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (isNetworkAvailable()) {
-            FetchRssService service = new FetchRssService();
-            service.startService(new Intent());
-        }
         mRssFragment.refreshList(null);
     }
 
