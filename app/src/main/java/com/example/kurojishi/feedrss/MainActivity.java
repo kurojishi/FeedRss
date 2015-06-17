@@ -25,8 +25,11 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
     @Override
     public void onNavigationDrawerItemSelected(int position) {
 
-        //TODO:azioni sulle activity quando premo un item del menu
-        mRssFragment.refreshList(mNavigationDrawerFragment.getTitle(position));
+        if (mNavigationDrawerFragment.getTitle(position).equals("All")) {
+            mRssFragment.refreshList(null);
+        } else {
+            mRssFragment.refreshList(mNavigationDrawerFragment.getTitle(position));
+        }
     }
 
     @Override
@@ -49,6 +52,12 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         mRssFragment = new RssListFragment();
         getFragmentManager().beginTransaction().add(R.id.rss_fragment_container, mRssFragment).commit();
 
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mRssFragment.refreshList(null);
     }
 
     @Override
