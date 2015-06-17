@@ -3,6 +3,7 @@ package com.example.kurojishi.feedrss;
 import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.net.ConnectivityManager;
@@ -40,6 +41,8 @@ public class SubscribeActivity extends Activity {
         setContentView(R.layout.activity_suscribe);
         mEditTitle = (EditText) findViewById(R.id.subscribe_title);
         mEditUrl = (EditText) findViewById(R.id.subscribe_url);
+        Intent intent = getIntent();
+        mEditUrl.setText(intent.getData().toString());
     }
 
     @Override
