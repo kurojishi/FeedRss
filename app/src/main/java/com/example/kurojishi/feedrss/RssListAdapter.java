@@ -1,7 +1,10 @@
 package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
+import android.app.DialogFragment;
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -28,9 +31,9 @@ public class RssListAdapter extends ArrayAdapter<RSSItemContainer> {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        Activity activity = (Activity) getContext();
+        final Activity activity = (Activity) getContext();
         View rowView = activity.getLayoutInflater().inflate(R.layout.article_item_list, null);
-        RSSItemContainer article = getItem(position);
+        final RSSItemContainer article = getItem(position);
 
         TextView titleView = (TextView) rowView.findViewById(R.id.article_title_text);
         titleView.setText(article.getTitle());
@@ -55,7 +58,37 @@ public class RssListAdapter extends ArrayAdapter<RSSItemContainer> {
         if (!article.getIsRead()) {
             titleView.setTypeface(Typeface.DEFAULT_BOLD);
         }
-
+        rowView.setLongClickable(true);
+        rowView.setOnLongClickListener(new View.OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View view) {
+                FeedDB helper = new FeedDB(activity.getBaseContext());
+                SQLiteDatabase db = helper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                if (article.getIsRead()) {
+                    article.setIsRead(false);
+                    values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, 0);
+                    String where = FeedDB.ArticleEntry._ID + " = " + article.getDbId();
+                    db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
+                    db.close();
+                    DialogFragment dialog = new UnReadDialog();
+                    dialog.show(activity.getFragmentManager(), "unread");
+                    TextView titleView = (TextView) view.findViewById(R.id.article_title_text);
+                    titleView.setTypeface(Typeface.DEFAULT_BOLD);
+                } else {
+                    article.setIsRead(true);
+                    values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, 1);
+                    String where = FeedDB.ArticleEntry._ID + " = " + article.getDbId();
+                    db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
+                    db.close();
+                    DialogFragment dialog = new ReadDialog();
+                    dialog.show(activity.getFragmentManager(), "read");
+                    TextView titleView = (TextView) view.findViewById(R.id.article_title_text);
+                    titleView.setTypeface(Typeface.DEFAULT);
+                }
+                return false;
+            }
+        });
         return rowView;
     }
 }
