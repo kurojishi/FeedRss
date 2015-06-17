@@ -2,6 +2,7 @@ package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -54,6 +55,9 @@ public class RssListAdapter extends ArrayAdapter<RSSItemContainer> {
 
         if (!article.getIsRead()) {
             titleView.setTypeface(Typeface.DEFAULT_BOLD);
+        }
+        if (article.getFavourite()) {
+            titleView.setTextColor(Color.YELLOW);
         }
 
         return rowView;

@@ -3,15 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.example.kurojishi.feedrss.ReadFeedActivity">
     <item
-        android:id="@+id/menu_item_share"
-        android:actionProviderClass="android.widget.ShareActionProvider"
-        android:icon="@android:drawable/ic_menu_share"
-        android:title="@string/share_button"
-        app:showAsAction="ifRoom" />
-    <item
         android:id="@+id/menu_favourite"
         android:icon="@android:drawable/star_off"
         android:title="@string/favourite"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_item_share"
+        android:actionProviderClass="android.widget.ShareActionProvider"
+        android:icon="@android:drawable/ic_menu_share"
+        android:title="@string/share_button"
+        app:showAsAction="never" />
 
 </menu>

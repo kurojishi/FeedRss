@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -36,6 +37,9 @@ public class ReadFeedActivity extends Activity {
         WebView webView = (WebView) findViewById(R.id.web_article_view);
         webView.loadData(article.getDescription(), "text/html", null);
         webView.getSettings().setBuiltInZoomControls(true);
+        if (article.getFavourite()) {
+            titleView.setTextColor(Color.YELLOW);
+        }
     }
 
     public void openFeed(View view) {
@@ -82,6 +86,7 @@ public class ReadFeedActivity extends Activity {
                 FeedDB helper = new FeedDB(getBaseContext());
                 SQLiteDatabase db = helper.getWritableDatabase();
                 ContentValues values = new ContentValues();
+                TextView titleView = (TextView) findViewById(R.id.read_feed_title);
                 if (article.getFavourite()) {
                     article.setFavourite(false);
                     values.put(FeedDB.ArticleEntry.COLUMN_NAME_FAVOURITE, 0);
@@ -89,6 +94,7 @@ public class ReadFeedActivity extends Activity {
                     db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
                     db.close();
                     item.setIcon(android.R.drawable.star_off);
+                    titleView.setTextColor(Color.GRAY);
                 } else {
                     article.setFavourite(true);
                     values.put(FeedDB.ArticleEntry.COLUMN_NAME_FAVOURITE, 1);
@@ -96,6 +102,9 @@ public class ReadFeedActivity extends Activity {
                     db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
                     db.close();
                     item.setIcon(android.R.drawable.star_on);
+
+                    titleView.setTextColor(Color.YELLOW);
+
                 }
         }
 
