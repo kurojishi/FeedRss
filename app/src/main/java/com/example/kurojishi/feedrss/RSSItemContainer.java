@@ -9,8 +9,8 @@ import java.util.Date;
  * Created by kurojishi on 6/15/15.
  */
 public class RSSItemContainer implements Serializable, Comparable<RSSItemContainer> {
-    private static final long serialVersionUID = 0L;
 
+    private static final long serialVersionUID = 0L;
     private String Author;
     private Boolean isRead;
     private Date pubDate;
@@ -20,6 +20,18 @@ public class RSSItemContainer implements Serializable, Comparable<RSSItemContain
     private String link;
     private Integer feedId;
     private Integer dbId;
+
+    public RSSItemContainer(String author, String content, Integer dbId, String description, Integer feedId, Boolean isRead, String link, Date pubDate, String title) {
+        Author = author;
+        this.content = content;
+        this.dbId = dbId;
+        this.description = description;
+        this.feedId = feedId;
+        this.isRead = isRead;
+        this.link = link;
+        this.pubDate = pubDate;
+        this.title = title;
+    }
 
     public RSSItemContainer(String author, Boolean isRead, RSSItem item, Integer id) {
         Author = author;

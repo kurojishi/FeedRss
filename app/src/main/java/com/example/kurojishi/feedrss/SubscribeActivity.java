@@ -2,8 +2,11 @@ package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -97,9 +100,18 @@ public class SubscribeActivity extends Activity {
             //this shouldn't happen as url is checked before this step
             return;
         }
-        new CheckURLStatus().execute(url);
+        if (isNetworkAvailable()) {
+            new CheckURLStatus().execute(url);
+        }
 
 
+    }
+
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
     }
 
     private final class CheckURLStatus extends AsyncTask<URL, Void, Integer>
@@ -160,6 +172,5 @@ public class SubscribeActivity extends Activity {
 
         }
     }
-
 
 }

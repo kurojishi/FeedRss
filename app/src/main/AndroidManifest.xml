@@ -38,7 +38,6 @@
                 <data android:pathPattern=".*\\.xml" />
                 <data android:pathPattern=".*\\.rss" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -51,7 +50,6 @@
                 <data android:host="feeds2.feedburner.com" />
                 <data android:host="feedsproxy.google.com" />
             </intent-filter>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -81,6 +79,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.example.kurojishi.feedrss.MainActivity" />
         </activity>
+
+        <service
+            android:name=".FetchRssService"
+            android:enabled="true"
+            android:exported="true"></service>
     </application>
 
 </manifest>
