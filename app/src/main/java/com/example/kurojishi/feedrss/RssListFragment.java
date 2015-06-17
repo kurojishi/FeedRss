@@ -61,14 +61,14 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        refreshList();
+        refreshList(null);
 
     }
 
-    public void refreshList() {
+    public void refreshList(String title) {
 
         RssFetcher fetcher = new RssFetcher(this);
-        fetcher.execute();
+        fetcher.execute(title);
     }
 
     @Override

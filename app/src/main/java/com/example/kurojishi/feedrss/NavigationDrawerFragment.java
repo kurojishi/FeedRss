@@ -60,8 +60,13 @@ public class NavigationDrawerFragment extends Fragment {
     private int mCurrentSelectedPosition = 0;
     private boolean mFromSavedInstanceState;
     private boolean mUserLearnedDrawer;
+    private List<String> titles;
 
     public NavigationDrawerFragment() {
+    }
+
+    public String getTitle(int position) {
+        return titles.get(position);
     }
 
     @Override
@@ -77,9 +82,6 @@ public class NavigationDrawerFragment extends Fragment {
             mCurrentSelectedPosition = savedInstanceState.getInt(STATE_SELECTED_POSITION);
             mFromSavedInstanceState = true;
         }
-
-        // Select either the default item (0) or the last selected item.
-        selectItem(mCurrentSelectedPosition);
     }
 
     @Override
@@ -92,6 +94,7 @@ public class NavigationDrawerFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        titles = new ArrayList<>();
         mDrawerListView = (ListView) inflater.inflate(
                 R.layout.fragment_navigation_drawer, container, false);
         mDrawerListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -107,20 +110,23 @@ public class NavigationDrawerFragment extends Fragment {
                 FeedDB.FeedEntry._ID
         };
         Cursor c = db.query(FeedDB.FeedEntry.TABLE_NAME, projection, null, null, null, null, null);
-        List<String> titles = new ArrayList<>();
-        List<Integer> unread = new ArrayList<>();
+        List<String> menuTitles = new ArrayList<>();
+        menuTitles.add("All");
+        titles.add("All");
         for (int i = 0; i <= c.getCount() - 1; i++) {
             c.moveToPosition(i);
-            titles.add(c.getString(c.getColumnIndex(FeedDB.FeedEntry.COLUMN_NAME_TITLE)) + " " + getUnread(mDrawerListView, c.getInt(c.getColumnIndex(FeedDB.FeedEntry._ID))).toString());
+            titles.add(c.getString(c.getColumnIndex(FeedDB.FeedEntry.COLUMN_NAME_TITLE)));
+            menuTitles.add(c.getString(c.getColumnIndex(FeedDB.FeedEntry.COLUMN_NAME_TITLE)) + " " + getUnread(mDrawerListView, c.getInt(c.getColumnIndex(FeedDB.FeedEntry._ID))).toString());
         }
         String[] sections = new String[titles.size()];
         mDrawerListView.setAdapter(new ArrayAdapter<String>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1,
-                titles.toArray(sections)));
+                menuTitles.toArray(sections)));
         mDrawerListView.setItemChecked(mCurrentSelectedPosition, true);
         db.close();
+
         return mDrawerListView;
     }
 

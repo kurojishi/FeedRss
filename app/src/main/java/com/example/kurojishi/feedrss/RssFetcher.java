@@ -43,8 +43,8 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
 
         SQLiteDatabase db = feedDatabase.getReadableDatabase();
         Cursor c;
-        if (title.length > 0) {
-            String selectionF = FeedDB.FeedEntry.COLUMN_NAME_TITLE + " = " + title[0];
+        if (title[0] != null) {
+            String selectionF = FeedDB.FeedEntry.COLUMN_NAME_TITLE + " = '" + title[0] + "'";
             c = db.query(FeedDB.FeedEntry.TABLE_NAME, feedsProjection, selectionF, null, null, null, null);
         } else {
             c = db.query(FeedDB.FeedEntry.TABLE_NAME, feedsProjection, null, null, null, null, null);
