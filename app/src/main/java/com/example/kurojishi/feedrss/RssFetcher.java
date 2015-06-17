@@ -62,6 +62,7 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
         SQLiteDatabase db = helper.getWritableDatabase();
         String[] projection = {
                 FeedDB.ArticleEntry.COLUMN_NAME_READ,
+                FeedDB.ArticleEntry.COLUMN_NAME_FAVOURITE,
                 FeedDB.ArticleEntry._ID
         };
         for (RSSItemContainer article: articles) {
