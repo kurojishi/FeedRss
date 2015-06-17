@@ -102,6 +102,9 @@ public class SubscribeActivity extends Activity {
         }
         if (isNetworkAvailable()) {
             new CheckURLStatus().execute(url);
+        } else {
+            Button addFeedButton = (Button) findViewById(R.id.add_feed);
+            addFeedButton.setEnabled(true);
         }
 
 
@@ -172,5 +175,6 @@ public class SubscribeActivity extends Activity {
 
         }
     }
+
 
 }
