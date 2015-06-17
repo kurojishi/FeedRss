@@ -1,10 +1,12 @@
 package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
+import android.app.DialogFragment;
 import android.app.ListFragment;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.database.sqlite.SQLiteDatabase;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,6 +84,36 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
 
         // Set OnItemClickListener so we can be notified on item clicks
         mListView.setOnItemClickListener(this);
+        mListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> parent, View v, int position, long id) {
+                FeedDB helper = new FeedDB(v.getContext());
+                SQLiteDatabase db = helper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                if (mArticles.get(position).getIsRead()) {
+                    mArticles.get(position).setIsRead(false);
+                    values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, 0);
+                    String where = FeedDB.ArticleEntry._ID + " = " + mArticles.get(position).getDbId();
+                    db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
+                    db.close();
+                    DialogFragment dialog = new UnReadDialog();
+                    dialog.show(getActivity().getFragmentManager(), "unread");
+                    TextView titleView = (TextView) v.findViewById(R.id.article_title_text);
+                    titleView.setTypeface(Typeface.DEFAULT_BOLD);
+                } else {
+                    mArticles.get(position).setIsRead(true);
+                    values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, 1);
+                    String where = FeedDB.ArticleEntry._ID + " = " + mArticles.get(position).getDbId();
+                    db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
+                    db.close();
+                    DialogFragment dialog = new ReadDialog();
+                    dialog.show(getActivity().getFragmentManager(), "read");
+                    TextView titleView = (TextView) v.findViewById(R.id.article_title_text);
+                    titleView.setTypeface(Typeface.DEFAULT);
+                }
+                return true;
+            }
+        });
 
         return view;
     }
@@ -90,6 +122,7 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
     public void onListItemClick(ListView l, View v, int position, long id) {
         openItem(v, mArticles.get(position));
     }
+
 
     @Override
     public void onAttach(Activity activity) {
