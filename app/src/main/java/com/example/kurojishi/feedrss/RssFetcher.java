@@ -82,6 +82,7 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
             } else {
                 c.moveToFirst();
                 article.setIsRead(c.getInt(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_READ)) > 0);
+                article.setFavourite(c.getInt(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_FAVOURITE)) > 0);
                 article.setDbId(c.getInt(c.getColumnIndex(FeedDB.ArticleEntry._ID)));
             }
             c.close();
