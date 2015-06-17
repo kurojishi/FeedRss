@@ -77,6 +77,7 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_PUBDATE, article.getPubDate().toString());
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_READ, 0);
                 values.put(FeedDB.ArticleEntry.COLUMN_NAME_FEED_ID, article.getFeedId());
+                values.put(FeedDB.ArticleEntry.COLUMN_NAME_FAVOURITE, 0);
                 db.insert(FeedDB.ArticleEntry.TABLE_NAME, null, values);
             } else {
                 c.moveToFirst();
@@ -161,7 +162,7 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
         for (int i = 0; i <= c.getCount() - 1; i++) {
             c.moveToPosition(i);
             DateFormat formatter = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
-            Date pubDate = new Date();
+            Date pubDate;
             try {
                 pubDate = formatter.parse(c.getString(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_PUBDATE)));
             } catch (ParseException e) {
@@ -176,7 +177,8 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
                     c.getInt(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_READ)) > 0,
                     c.getString(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_URL)),
                     pubDate,
-                    c.getString(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_TITLE))));
+                    c.getString(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_TITLE)),
+                    c.getInt(c.getColumnIndex(FeedDB.ArticleEntry.COLUMN_NAME_FAVOURITE)) > 0));
         }
         c.close();
         db.close();

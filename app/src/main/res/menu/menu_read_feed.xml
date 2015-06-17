@@ -8,5 +8,10 @@
         android:icon="@android:drawable/ic_menu_share"
         android:title="@string/share_button"
         app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/menu_favourite"
+        android:icon="@android:drawable/star_off"
+        android:title="@string/favourite"
+        app:showAsAction="ifRoom" />
 
 </menu>

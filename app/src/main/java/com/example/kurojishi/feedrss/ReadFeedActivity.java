@@ -1,7 +1,9 @@
 package com.example.kurojishi.feedrss;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -49,6 +51,13 @@ public class ReadFeedActivity extends Activity {
         MenuItem shareItem = menu.findItem(R.id.menu_item_share);
         mShareActionProvider = (ShareActionProvider) shareItem.getActionProvider();
 
+        MenuItem item = menu.findItem(R.id.menu_favourite);
+        if (article.getFavourite()) {
+            item.setIcon(android.R.drawable.star_on);
+        } else {
+            item.setIcon(android.R.drawable.star_off);
+        }
+
         return true;
     }
 
@@ -69,6 +78,25 @@ public class ReadFeedActivity extends Activity {
                 intent.setType("text/plain");
                 setShareIntent(intent);
                 return true;
+            case R.id.menu_favourite:
+                FeedDB helper = new FeedDB(getBaseContext());
+                SQLiteDatabase db = helper.getWritableDatabase();
+                ContentValues values = new ContentValues();
+                if (article.getFavourite()) {
+                    article.setFavourite(false);
+                    values.put(FeedDB.ArticleEntry.COLUMN_NAME_FAVOURITE, 0);
+                    String where = FeedDB.ArticleEntry._ID + " = " + article.getDbId();
+                    db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
+                    db.close();
+                    item.setIcon(android.R.drawable.star_off);
+                } else {
+                    article.setFavourite(true);
+                    values.put(FeedDB.ArticleEntry.COLUMN_NAME_FAVOURITE, 1);
+                    String where = FeedDB.ArticleEntry._ID + " = " + article.getDbId();
+                    db.update(FeedDB.ArticleEntry.TABLE_NAME, values, where, null);
+                    db.close();
+                    item.setIcon(android.R.drawable.star_on);
+                }
         }
 
         return super.onOptionsItemSelected(item);

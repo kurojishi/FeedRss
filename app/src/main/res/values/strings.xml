@@ -17,6 +17,7 @@
     <string name="title_activity_add_new_feed">AddNewFeedActivity</string>
 
     <string name="share_button">Share</string>
+    <string name="favourite">Set As Favourite</string>
 
 
     <string name="new_feed_title_hint">Title</string>

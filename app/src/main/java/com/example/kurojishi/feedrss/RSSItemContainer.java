@@ -20,8 +20,9 @@ public class RSSItemContainer implements Serializable, Comparable<RSSItemContain
     private String link;
     private Integer feedId;
     private Integer dbId;
+    private Boolean favourite;
 
-    public RSSItemContainer(String author, String content, Integer dbId, String description, Integer feedId, Boolean isRead, String link, Date pubDate, String title) {
+    public RSSItemContainer(String author, String content, Integer dbId, String description, Integer feedId, Boolean isRead, String link, Date pubDate, String title, Boolean favourite) {
         Author = author;
         this.content = content;
         this.dbId = dbId;
@@ -31,6 +32,7 @@ public class RSSItemContainer implements Serializable, Comparable<RSSItemContain
         this.link = link;
         this.pubDate = pubDate;
         this.title = title;
+        this.favourite = favourite;
     }
 
     public RSSItemContainer(String author, Boolean isRead, RSSItem item, Integer id) {
@@ -42,6 +44,15 @@ public class RSSItemContainer implements Serializable, Comparable<RSSItemContain
         content = item.getContent();
         link = item.getLink().toString();
         feedId = id;
+        favourite = false;
+    }
+
+    public Boolean getFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(Boolean favourite) {
+        this.favourite = favourite;
     }
 
     public Integer getDbId() {

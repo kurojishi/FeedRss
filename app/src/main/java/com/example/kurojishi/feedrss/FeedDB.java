@@ -29,12 +29,13 @@ public class FeedDB extends SQLiteOpenHelper {
                     ArticleEntry.COLUMN_NAME_PUBDATE + TEXT_TYPE + COMMA_SEP +
                     ArticleEntry.COLUMN_NAME_AUTHOR + TEXT_TYPE + COMMA_SEP +
                     ArticleEntry.COLUMN_NAME_READ + " INTEGER" + COMMA_SEP +
+                    ArticleEntry.COLUMN_NAME_FAVOURITE + " INTEGER" + COMMA_SEP +
                     ArticleEntry.COLUMN_NAME_FEED_ID + " INTEGER, " +
                     "FOREIGN KEY(" + ArticleEntry.COLUMN_NAME_FEED_ID + ") REFERENCES feeds(" + FeedEntry._ID + "))";
 
     private static final String DROP_ARTICLE_TABLE = "DROP TABLE IF EXISTS " + ArticleEntry.TABLE_NAME;
 
-    private static final int DATABASE_VERSION = 18;
+    private static final int DATABASE_VERSION = 23;
 
     public FeedDB(Context context) {
         super(context, DATABSE_NAME, null, DATABASE_VERSION);
@@ -48,6 +49,8 @@ public class FeedDB extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i1) {
+        sqLiteDatabase.execSQL(DROP_ARTICLE_TABLE);
+        sqLiteDatabase.execSQL(CREATE_ARTICLE_TABLE);
     }
 
     /* Inner class that defines the table contents */
@@ -67,6 +70,7 @@ public class FeedDB extends SQLiteOpenHelper {
         public static final String COLUMN_NAME_AUTHOR = "author";
         public static final String COLUMN_NAME_READ = "read";
         public static final String COLUMN_NAME_FEED_ID = "feedid";
+        public static final String COLUMN_NAME_FAVOURITE = "favourite";
     }
 
 
