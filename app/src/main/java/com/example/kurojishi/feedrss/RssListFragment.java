@@ -17,8 +17,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.kurojishi.feedrss.dummy.DummyContent;
-
 import java.util.List;
 
 /**
@@ -146,7 +144,7 @@ public class RssListFragment extends ListFragment implements AbsListView.OnItemC
         if (null != mListener) {
             // Notify the active callbacks interface (the activity, if the
             // fragment is attached to one) that an item has been selected.
-            mListener.onFragmentInteraction(DummyContent.ITEMS.get(position).id);
+            mListener.onFragmentInteraction(mArticles.get(position).getTitle());
         }
     }
 
