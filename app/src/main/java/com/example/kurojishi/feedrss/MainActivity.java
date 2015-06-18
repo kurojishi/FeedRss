@@ -3,6 +3,7 @@ package com.example.kurojishi.feedrss;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.widget.DrawerLayout;
 import android.view.MenuItem;
 import android.view.View;
@@ -51,6 +52,7 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
                 (DrawerLayout) findViewById(R.id.drawer_layout));
         mRssFragment = new RssListFragment();
         getFragmentManager().beginTransaction().add(R.id.rss_fragment_container, mRssFragment).commit();
+        PreferenceManager.setDefaultValues(this, R.xml.pref_general, false);
     }
 
     @Override

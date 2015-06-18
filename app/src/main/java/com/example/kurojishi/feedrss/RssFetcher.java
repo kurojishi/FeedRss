@@ -3,11 +3,13 @@ package com.example.kurojishi.feedrss;
 import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.mcsoxford.rss.RSSFeed;
@@ -46,7 +48,8 @@ public class RssFetcher extends AsyncTask<String, Void, List<RSSItemContainer>> 
     @Override
     protected List<RSSItemContainer> doInBackground(String... title) {
         List<RSSItemContainer> articles;
-        if (isNetworkAvailable()) {
+        SharedPreferences preference = PreferenceManager.getDefaultSharedPreferences(context);
+        if (isNetworkAvailable() && !preference.getBoolean("offline_checkbox", false)) {
             articles = fetchFromInternet(title[0]);
         } else {
             articles = fetchFromDb(title[0]);

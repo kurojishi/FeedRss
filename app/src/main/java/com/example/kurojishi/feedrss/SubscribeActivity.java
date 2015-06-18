@@ -42,7 +42,9 @@ public class SubscribeActivity extends Activity {
         mEditTitle = (EditText) findViewById(R.id.subscribe_title);
         mEditUrl = (EditText) findViewById(R.id.subscribe_url);
         Intent intent = getIntent();
-        mEditUrl.setText(intent.getData().toString());
+        if (intent.getData() != null) {
+            mEditUrl.setText(intent.getData().toString());
+        }
     }
 
     @Override
