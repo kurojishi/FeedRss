@@ -81,11 +81,16 @@ public class MainActivity extends Activity implements NavigationDrawerFragment.N
         //noinspection SimplifiableIfStatement
         switch (item.getItemId()) {
             case (R.id.action_settings):
+                startActivity(new Intent(this, SettingsActivity.class));
                 return true;
             case (R.id.new_subscrition):
                 startActivity(new Intent(this, SubscribeActivity.class));
+                return true;
             case (R.id.action_refresh):
                 mRssFragment.refreshList(null);
+                return true;
+
+
 
         }
 
